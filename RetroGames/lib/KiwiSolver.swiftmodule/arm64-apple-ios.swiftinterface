@@ -1,0 +1,274 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.4 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name KiwiSolver -package-name kiwi
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=swift-6 -interface-compiler-version 6.2.4
+import CoreGraphics
+import CxxKiwi
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public enum SolverError : Swift.Error, Swift.CustomStringConvertible {
+  case unsatisfiableConstraint(Swift.String)
+  case unknownConstraint(Swift.String)
+  case duplicateConstraint(Swift.String)
+  case unknownEditVariable(Swift.String)
+  case duplicateEditVariable(Swift.String)
+  case badRequiredStrength(Swift.String)
+  case internalError(Swift.String)
+  public var description: Swift.String {
+    get
+  }
+}
+public enum Strength {
+  case required
+  case strong
+  case medium
+  case weak
+  case custom(Swift.Double)
+  public var rawValue: Swift.Double {
+    get
+  }
+}
+final public class Variable {
+  public init(_ name: Swift.String)
+  final public var name: Swift.String {
+    get
+  }
+  final public var value: Swift.Double {
+    get
+  }
+  @objc deinit
+}
+public struct Term {
+  public let variable: KiwiSolver.Variable
+  public let coefficient: Swift.Double
+  public init(_ variable: KiwiSolver.Variable, coefficient: Swift.Double = 1.0)
+}
+public struct Expression {
+  public var terms: [KiwiSolver.Term]
+  public var constant: Swift.Double
+  public init(_ terms: [KiwiSolver.Term] = [], constant: Swift.Double = 0)
+  public init(_ variable: KiwiSolver.Variable)
+  public init(_ term: KiwiSolver.Term)
+  public init(_ constant: Swift.Double)
+}
+public struct Constraint {
+  public func with(strength: KiwiSolver.Strength) -> KiwiSolver.Constraint
+  public var op: KiwiSolver.RelationalOperator {
+    get
+  }
+  public var strength: Swift.Double {
+    get
+  }
+  public var violated: Swift.Bool {
+    get
+  }
+}
+public enum RelationalOperator {
+  case equal
+  case lessOrEqual
+  case greaterOrEqual
+  public static func == (a: KiwiSolver.RelationalOperator, b: KiwiSolver.RelationalOperator) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+final public class Solver {
+  public init()
+  final public func addConstraint(_ constraint: KiwiSolver.Constraint) throws
+  final public func removeConstraint(_ constraint: KiwiSolver.Constraint) throws
+  final public func hasConstraint(_ constraint: KiwiSolver.Constraint) -> Swift.Bool
+  final public func addEditVariable(_ variable: KiwiSolver.Variable, strength: KiwiSolver.Strength) throws
+  final public func removeEditVariable(_ variable: KiwiSolver.Variable) throws
+  final public func hasEditVariable(_ variable: KiwiSolver.Variable) -> Swift.Bool
+  final public func suggestValue(_ variable: KiwiSolver.Variable, value: Swift.Double) throws
+  final public func updateVariables()
+  final public func reset()
+  @objc deinit
+}
+public func * (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Term
+public func * (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Term
+public func / (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Term
+public func * (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Term
+public func * (lhs: Swift.Double, rhs: KiwiSolver.Term) -> KiwiSolver.Term
+prefix public func - (variable: KiwiSolver.Variable) -> KiwiSolver.Term
+prefix public func - (term: KiwiSolver.Term) -> KiwiSolver.Term
+prefix public func - (expr: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Expression
+public func + (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Expression
+public func - (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Term, rhs: KiwiSolver.Term) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Term, rhs: KiwiSolver.Term) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Expression
+public func + (lhs: Swift.Double, rhs: KiwiSolver.Term) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Term) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Term, rhs: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Term) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Variable) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Expression, rhs: Swift.Double) -> KiwiSolver.Expression
+public func + (lhs: Swift.Double, rhs: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Expression, rhs: Swift.Double) -> KiwiSolver.Expression
+public func + (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func - (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Expression) -> KiwiSolver.Expression
+public func == (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func == (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func <= (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Variable, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func >= (lhs: Swift.Double, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Expression, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func == (lhs: Swift.Double, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Expression, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func <= (lhs: Swift.Double, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Expression, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func >= (lhs: Swift.Double, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Term, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Term, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func == (lhs: Swift.Double, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Variable, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Variable) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Term, rhs: Swift.Double) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func == (lhs: KiwiSolver.Term, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func <= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Expression, rhs: KiwiSolver.Term) -> KiwiSolver.Constraint
+public func >= (lhs: KiwiSolver.Term, rhs: KiwiSolver.Expression) -> KiwiSolver.Constraint
+public func | (lhs: KiwiSolver.Constraint, rhs: KiwiSolver.Strength) -> KiwiSolver.Constraint
+public func | (lhs: KiwiSolver.Strength, rhs: KiwiSolver.Constraint) -> KiwiSolver.Constraint
+public struct LayoutAnchor : @unchecked Swift.Sendable {
+  public var value: Swift.Double {
+    get
+  }
+}
+public struct LayoutExpression : @unchecked Swift.Sendable {
+}
+public struct LayoutConstraint : @unchecked Swift.Sendable {
+}
+public func + (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func + (lhs: Swift.Double, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func - (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func * (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func * (lhs: Swift.Double, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func + (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func - (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func + (lhs: KiwiSolver.LayoutExpression, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func - (lhs: KiwiSolver.LayoutExpression, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func * (lhs: KiwiSolver.LayoutExpression, rhs: Swift.Double) -> KiwiSolver.LayoutExpression
+public func + (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func - (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutExpression
+public func + (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutExpression
+public func - (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutExpression
+public func == (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutConstraint
+public func == (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutConstraint
+public func == (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutConstraint
+public func == (lhs: KiwiSolver.LayoutExpression, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutConstraint
+public func == (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutConstraint
+public func == (lhs: KiwiSolver.LayoutExpression, rhs: Swift.Double) -> KiwiSolver.LayoutConstraint
+public func <= (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutConstraint
+public func <= (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutConstraint
+public func <= (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutConstraint
+public func >= (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutAnchor) -> KiwiSolver.LayoutConstraint
+public func >= (lhs: KiwiSolver.LayoutAnchor, rhs: KiwiSolver.LayoutExpression) -> KiwiSolver.LayoutConstraint
+public func >= (lhs: KiwiSolver.LayoutAnchor, rhs: Swift.Double) -> KiwiSolver.LayoutConstraint
+final public class LayoutBox : @unchecked Swift.Sendable {
+  final public let name: Swift.String
+  public init(_ name: Swift.String = "box")
+  final public var left: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var top: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var width: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var height: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var right: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var bottom: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var centerX: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var centerY: KiwiSolver.LayoutAnchor {
+    get
+  }
+  final public var frame: CoreFoundation.CGRect {
+    get
+  }
+  final public var floatFrame: (x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float) {
+    get
+  }
+  @objc deinit
+}
+extension KiwiSolver.LayoutBox {
+  final public func pinEdges(to other: KiwiSolver.LayoutBox, inset: Swift.Double = 0) -> [KiwiSolver.LayoutConstraint]
+  final public func pinHorizontal(to other: KiwiSolver.LayoutBox, inset: Swift.Double = 0) -> [KiwiSolver.LayoutConstraint]
+  final public func pinVertical(to other: KiwiSolver.LayoutBox, inset: Swift.Double = 0) -> [KiwiSolver.LayoutConstraint]
+  final public func center(in other: KiwiSolver.LayoutBox) -> [KiwiSolver.LayoutConstraint]
+  final public func centerHorizontally(in other: KiwiSolver.LayoutBox) -> [KiwiSolver.LayoutConstraint]
+  final public func centerVertically(in other: KiwiSolver.LayoutBox) -> [KiwiSolver.LayoutConstraint]
+  final public func size(_ width: Swift.Double, _ height: Swift.Double) -> [KiwiSolver.LayoutConstraint]
+  final public func fixedWidth(_ value: Swift.Double) -> KiwiSolver.LayoutConstraint
+  final public func fixedHeight(_ value: Swift.Double) -> KiwiSolver.LayoutConstraint
+  final public func below(_ other: KiwiSolver.LayoutBox, spacing: Swift.Double = 0) -> KiwiSolver.LayoutConstraint
+  final public func above(_ other: KiwiSolver.LayoutBox, spacing: Swift.Double = 0) -> KiwiSolver.LayoutConstraint
+  final public func after(_ other: KiwiSolver.LayoutBox, spacing: Swift.Double = 0) -> KiwiSolver.LayoutConstraint
+  final public func before(_ other: KiwiSolver.LayoutBox, spacing: Swift.Double = 0) -> KiwiSolver.LayoutConstraint
+}
+final public class LayoutSolver {
+  final public let container: KiwiSolver.LayoutBox
+  public init()
+  final public func setContainerSize(width: Swift.Double, height: Swift.Double)
+  @discardableResult
+  final public func addBox(_ box: KiwiSolver.LayoutBox) -> KiwiSolver.LayoutBox
+  final public func addConstraint(_ constraint: KiwiSolver.LayoutConstraint)
+  final public func addConstraints(_ constraints: [KiwiSolver.LayoutConstraint])
+  final public func solve()
+  final public func reset()
+  final public var allBoxes: [KiwiSolver.LayoutBox] {
+    get
+  }
+  @objc deinit
+}
+extension KiwiSolver.LayoutSolver {
+  final public func verticalStack(_ boxes: [KiwiSolver.LayoutBox], spacing: Swift.Double = 0, insets: Swift.Double = 0)
+  final public func horizontalStack(_ boxes: [KiwiSolver.LayoutBox], spacing: Swift.Double = 0, insets: Swift.Double = 0)
+  final public func distributeHorizontally(_ boxes: [KiwiSolver.LayoutBox], spacing: Swift.Double = 0, insets: Swift.Double = 0)
+  final public func distributeVertically(_ boxes: [KiwiSolver.LayoutBox], spacing: Swift.Double = 0, insets: Swift.Double = 0)
+}
+extension KiwiSolver.RelationalOperator : Swift.Equatable {}
+extension KiwiSolver.RelationalOperator : Swift.Hashable {}

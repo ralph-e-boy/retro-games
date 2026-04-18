@@ -1,0 +1,2678 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.2.4 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
+// swift-module-flags: -target arm64-apple-ios15.0 -enable-objc-interop -enable-library-evolution -swift-version 6 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -module-name Metal2D -package-name metal2d
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=swift-6 -interface-compiler-version 6.2.4
+import CoreGraphics
+import CoreText
+import Foundation
+import Metal
+import MetalKit
+import QuartzCore
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+import simd
+public protocol Animatable {
+  static func lerp(from: Self, to: Self, t: Swift.Float) -> Self
+}
+public protocol VectorArithmetic : Metal2D.Animatable {
+  static var zero: Self { get }
+  static func add(_ lhs: Self, _ rhs: Self) -> Self
+  static func subtract(_ lhs: Self, _ rhs: Self) -> Self
+  static func scale(_ value: Self, by scalar: Swift.Float) -> Self
+  static func magnitude(_ value: Self) -> Swift.Float
+}
+extension Swift.Float : Metal2D.Animatable {
+  public static func lerp(from: Swift.Float, to: Swift.Float, t: Swift.Float) -> Swift.Float
+}
+extension Swift.Float : Metal2D.VectorArithmetic {
+  public static var zero: Swift.Float {
+    get
+  }
+  public static func add(_ lhs: Swift.Float, _ rhs: Swift.Float) -> Swift.Float
+  public static func subtract(_ lhs: Swift.Float, _ rhs: Swift.Float) -> Swift.Float
+  public static func scale(_ value: Swift.Float, by scalar: Swift.Float) -> Swift.Float
+  public static func magnitude(_ value: Swift.Float) -> Swift.Float
+}
+extension Metal2D.Vector2D : Metal2D.Animatable {
+  public static func lerp(from: Metal2D.Vector2D, to: Metal2D.Vector2D, t: Swift.Float) -> Metal2D.Vector2D
+}
+extension Metal2D.Vector2D : Metal2D.VectorArithmetic {
+  public static var zero: Metal2D.Vector2D {
+    get
+  }
+  public static func add(_ lhs: Metal2D.Vector2D, _ rhs: Metal2D.Vector2D) -> Metal2D.Vector2D
+  public static func subtract(_ lhs: Metal2D.Vector2D, _ rhs: Metal2D.Vector2D) -> Metal2D.Vector2D
+  public static func scale(_ value: Metal2D.Vector2D, by scalar: Swift.Float) -> Metal2D.Vector2D
+  public static func magnitude(_ value: Metal2D.Vector2D) -> Swift.Float
+}
+extension Swift.SIMD2 : Metal2D.Animatable where Scalar == Swift.Float {
+  public static func lerp(from: simd.simd_float2, to: simd.simd_float2, t: Swift.Float) -> simd.simd_float2
+}
+extension Swift.SIMD2 : Metal2D.VectorArithmetic where Scalar == Swift.Float {
+  public static var zero: simd.simd_float2 {
+    get
+  }
+  public static func add(_ lhs: simd.simd_float2, _ rhs: simd.simd_float2) -> simd.simd_float2
+  public static func subtract(_ lhs: simd.simd_float2, _ rhs: simd.simd_float2) -> simd.simd_float2
+  public static func scale(_ value: simd.simd_float2, by scalar: Swift.Float) -> simd.simd_float2
+  public static func magnitude(_ value: simd.simd_float2) -> Swift.Float
+}
+extension Swift.SIMD3 : Metal2D.Animatable where Scalar == Swift.Float {
+  public static func lerp(from: simd.simd_float3, to: simd.simd_float3, t: Swift.Float) -> simd.simd_float3
+}
+extension Swift.SIMD3 : Metal2D.VectorArithmetic where Scalar == Swift.Float {
+  public static var zero: simd.simd_float3 {
+    get
+  }
+  public static func add(_ lhs: simd.simd_float3, _ rhs: simd.simd_float3) -> simd.simd_float3
+  public static func subtract(_ lhs: simd.simd_float3, _ rhs: simd.simd_float3) -> simd.simd_float3
+  public static func scale(_ value: simd.simd_float3, by scalar: Swift.Float) -> simd.simd_float3
+  public static func magnitude(_ value: simd.simd_float3) -> Swift.Float
+}
+extension Swift.SIMD4 : Metal2D.Animatable where Scalar == Swift.Float {
+  public static func lerp(from: simd.simd_float4, to: simd.simd_float4, t: Swift.Float) -> simd.simd_float4
+}
+extension Swift.SIMD4 : Metal2D.VectorArithmetic where Scalar == Swift.Float {
+  public static var zero: simd.simd_float4 {
+    get
+  }
+  public static func add(_ lhs: simd.simd_float4, _ rhs: simd.simd_float4) -> simd.simd_float4
+  public static func subtract(_ lhs: simd.simd_float4, _ rhs: simd.simd_float4) -> simd.simd_float4
+  public static func scale(_ value: simd.simd_float4, by scalar: Swift.Float) -> simd.simd_float4
+  public static func magnitude(_ value: simd.simd_float4) -> Swift.Float
+}
+extension Metal2D.Color : Metal2D.Animatable {
+  public static func lerp(from: Metal2D.Color, to: Metal2D.Color, t: Swift.Float) -> Metal2D.Color
+}
+public class AnimationManager {
+  public init()
+  @discardableResult
+  public func animate(from: Swift.Float, to: Swift.Float, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0, onUpdate: @escaping (Swift.Float) -> Swift.Void) -> Metal2D.Tween<Swift.Float>
+  @discardableResult
+  public func animate(from: Metal2D.Vector2D, to: Metal2D.Vector2D, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0, onUpdate: @escaping (Metal2D.Vector2D) -> Swift.Void) -> Metal2D.Tween<Metal2D.Vector2D>
+  @discardableResult
+  public func animate(from: Metal2D.Color, to: Metal2D.Color, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0, onUpdate: @escaping (Metal2D.Color) -> Swift.Void) -> Metal2D.Tween<Metal2D.Color>
+  @discardableResult
+  public func animate(from: simd.simd_float2, to: simd.simd_float2, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0, onUpdate: @escaping (simd.simd_float2) -> Swift.Void) -> Metal2D.Tween<simd.simd_float2>
+  @discardableResult
+  public func add<T>(_ tween: Metal2D.Tween<T>) -> Metal2D.Tween<T> where T : Metal2D.Animatable
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public func spring(_ initialValue: Swift.Float, stiffness: Swift.Float = 180, damping: Swift.Float = 12, onUpdate: ((Swift.Float) -> Swift.Void)? = nil) -> Metal2D.Spring<Swift.Float>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public func spring(_ initialValue: Metal2D.Vector2D, stiffness: Swift.Float = 180, damping: Swift.Float = 12, onUpdate: ((Metal2D.Vector2D) -> Swift.Void)? = nil) -> Metal2D.Spring<Metal2D.Vector2D>
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public func spring(_ initialValue: simd.simd_float2, stiffness: Swift.Float = 180, damping: Swift.Float = 12, onUpdate: ((simd.simd_float2) -> Swift.Void)? = nil) -> Metal2D.Spring<simd.simd_float2>
+  #endif
+  @discardableResult
+  public func add<T>(_ spring: Metal2D.Spring<T>) -> Metal2D.Spring<T> where T : Metal2D.VectorArithmetic
+  @discardableResult
+  public func add(_ timeline: Metal2D.Timeline) -> Metal2D.Timeline
+  public func timeline() -> Metal2D.Timeline
+  public func update(deltaTime: Swift.Float)
+  public func cancelAll()
+  public func remove<T>(_ tween: Metal2D.Tween<T>) where T : Metal2D.Animatable
+  public func remove<T>(_ spring: Metal2D.Spring<T>) where T : Metal2D.VectorArithmetic
+  public func remove(_ timeline: Metal2D.Timeline)
+  public var activeTweenCount: Swift.Int {
+    get
+  }
+  public var activeSpringCount: Swift.Int {
+    get
+  }
+  public var activeTimelineCount: Swift.Int {
+    get
+  }
+  public var totalActiveCount: Swift.Int {
+    get
+  }
+  public var hasActiveAnimations: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Metal2D.AnimationManager {
+  public func pulse(_ binding: @escaping (Swift.Float) -> Swift.Void, scale: Swift.Float = 1.3, duration: Swift.Float = 0.3)
+  public func shake(_ binding: @escaping (Swift.Float) -> Swift.Void, intensity: Swift.Float = 10, duration: Swift.Float = 0.4)
+}
+public enum Easing {
+  case linear
+  case easeInQuad
+  case easeOutQuad
+  case easeInOutQuad
+  case easeInCubic
+  case easeOutCubic
+  case easeInOutCubic
+  case easeInQuart
+  case easeOutQuart
+  case easeInOutQuart
+  case easeInQuint
+  case easeOutQuint
+  case easeInOutQuint
+  case easeInSine
+  case easeOutSine
+  case easeInOutSine
+  case easeInExpo
+  case easeOutExpo
+  case easeInOutExpo
+  case easeInCirc
+  case easeOutCirc
+  case easeInOutCirc
+  case easeInBack
+  case easeOutBack
+  case easeInOutBack
+  case easeInElastic
+  case easeOutElastic
+  case easeInOutElastic
+  case easeInBounce
+  case easeOutBounce
+  case easeInOutBounce
+  case custom((Swift.Float) -> Swift.Float)
+  public func apply(_ t: Swift.Float) -> Swift.Float
+}
+extension Metal2D.Easing {
+  public static var standard: Metal2D.Easing {
+    get
+  }
+  public static var enter: Metal2D.Easing {
+    get
+  }
+  public static var exit: Metal2D.Easing {
+    get
+  }
+  public static var bouncy: Metal2D.Easing {
+    get
+  }
+  public static var springy: Metal2D.Easing {
+    get
+  }
+}
+extension Metal2D.AnimationManager {
+  @discardableResult
+  public func staggerSprites(_ sprites: [Metal2D.Sprite], property: Swift.WritableKeyPath<Metal2D.Sprite, Swift.Float>, from: Swift.Float, to: Swift.Float, duration: Swift.Float, staggerDelay: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad) -> Metal2D.Timeline
+  @discardableResult
+  public func highlightSequence(_ sprites: [Metal2D.Sprite], color highlightColor: Metal2D.Color, restColor: Metal2D.Color, noteDuration: Swift.Float = 0.3, staggerDelay: Swift.Float = 0.15) -> Metal2D.Timeline
+}
+public struct KeyframePoint<T> where T : Metal2D.Animatable {
+  public let time: Swift.Float
+  public let value: T
+  public let easing: Metal2D.Easing
+  public init(time: Swift.Float, value: T, easing: Metal2D.Easing = .linear)
+}
+public class KeyframeAnimation<T> where T : Metal2D.Animatable {
+  public enum State {
+    case pending
+    case running
+    case completed
+    public static func == (a: Metal2D.KeyframeAnimation<T>.State, b: Metal2D.KeyframeAnimation<T>.State) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum TimeMode {
+    case normalized
+    case absolute
+    public static func == (a: Metal2D.KeyframeAnimation<T>.TimeMode, b: Metal2D.KeyframeAnimation<T>.TimeMode) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var state: Metal2D.KeyframeAnimation<T>.State {
+    get
+  }
+  public var currentValue: T {
+    get
+  }
+  public var loops: Swift.Bool
+  public var loopCount: Swift.Int
+  public init(keyframes: [Metal2D.KeyframePoint<T>], duration: Swift.Float, timeMode: Metal2D.KeyframeAnimation<T>.TimeMode = .normalized)
+  @discardableResult
+  public func onUpdate(_ handler: @escaping (T) -> Swift.Void) -> Self
+  @discardableResult
+  public func onComplete(_ handler: @escaping () -> Swift.Void) -> Self
+  @discardableResult
+  public func onLoop(_ handler: @escaping (Swift.Int) -> Swift.Void) -> Self
+  public func update(deltaTime: Swift.Float)
+  public func restart()
+  public func seekTo(_ progress: Swift.Float)
+  public var progress: Swift.Float {
+    get
+  }
+  public var isActive: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Metal2D.KeyframeAnimation : Metal2D.TimelineAnimatable {
+  public var isComplete: Swift.Bool {
+    get
+  }
+}
+extension Metal2D.KeyframeAnimation {
+  public class Builder {
+    public init()
+    @discardableResult
+    public func keyframe(at time: Swift.Float, value: T, easing: Metal2D.Easing = .linear) -> Metal2D.KeyframeAnimation<T>.Builder
+    @discardableResult
+    public func duration(_ duration: Swift.Float) -> Metal2D.KeyframeAnimation<T>.Builder
+    @discardableResult
+    public func timeMode(_ mode: Metal2D.KeyframeAnimation<T>.TimeMode) -> Metal2D.KeyframeAnimation<T>.Builder
+    public func build() -> Metal2D.KeyframeAnimation<T>
+    @objc deinit
+  }
+  public static func builder() -> Metal2D.KeyframeAnimation<T>.Builder
+}
+public protocol AnySpring : AnyObject {
+  var isSettled: Swift.Bool { get }
+  func update(deltaTime: Swift.Float)
+}
+public class Spring<T> : Metal2D.AnySpring where T : Metal2D.VectorArithmetic {
+  public var currentValue: T {
+    get
+  }
+  public var targetValue: T {
+    get
+    set
+  }
+  public var stiffness: Swift.Float
+  public var damping: Swift.Float
+  public var mass: Swift.Float
+  public var isSettled: Swift.Bool {
+    get
+  }
+  public var angularFrequency: Swift.Float {
+    get
+  }
+  public var frequency: Swift.Float {
+    get
+  }
+  public var dampingRatio: Swift.Float {
+    get
+  }
+  public init(initialValue: T, stiffness: Swift.Float = 180, damping: Swift.Float = 12, mass: Swift.Float = 1, settleThreshold: Swift.Float = 0.001)
+  @discardableResult
+  public func onUpdate(_ handler: @escaping (T) -> Swift.Void) -> Self
+  @discardableResult
+  public func onSettle(_ handler: @escaping () -> Swift.Void) -> Self
+  public func update(deltaTime: Swift.Float)
+  public func impulse(_ force: T)
+  public func snapTo(_ value: T)
+  public func reset()
+  public var settled: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Metal2D.Spring {
+  public static func gentle(_ initialValue: T) -> Metal2D.Spring<T>
+  public static func bouncy(_ initialValue: T) -> Metal2D.Spring<T>
+  public static func stiff(_ initialValue: T) -> Metal2D.Spring<T>
+  public static func wobbly(_ initialValue: T) -> Metal2D.Spring<T>
+  public static func smooth(_ initialValue: T) -> Metal2D.Spring<T>
+}
+extension Metal2D.Spring where T == Swift.Float {
+  convenience public init(_ initialValue: Swift.Float, stiffness: Swift.Float = 180, damping: Swift.Float = 12)
+}
+extension Metal2D.Spring where T == Metal2D.Vector2D {
+  convenience public init(_ initialValue: Metal2D.Vector2D, stiffness: Swift.Float = 180, damping: Swift.Float = 12)
+}
+extension Metal2D.Spring where T == Swift.SIMD2<Swift.Float> {
+  convenience public init(_ initialValue: simd.simd_float2, stiffness: Swift.Float = 180, damping: Swift.Float = 12)
+}
+public protocol TimelineAnimatable : AnyObject {
+  var isComplete: Swift.Bool { get }
+  func update(deltaTime: Swift.Float)
+  func restart()
+}
+public class Timeline {
+  public enum State {
+    case pending
+    case running
+    case paused
+    case completed
+    public static func == (a: Metal2D.Timeline.State, b: Metal2D.Timeline.State) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var state: Metal2D.Timeline.State {
+    get
+  }
+  public var totalDuration: Swift.Float {
+    get
+  }
+  public var loops: Swift.Bool
+  public var loopCount: Swift.Int
+  public init()
+  @discardableResult
+  public func then(_ animation: any Metal2D.TimelineAnimatable, duration: Swift.Float) -> Self
+  @discardableResult
+  public func with(_ animation: any Metal2D.TimelineAnimatable, duration: Swift.Float) -> Self
+  @discardableResult
+  public func wait(_ seconds: Swift.Float) -> Self
+  @discardableResult
+  public func at(_ time: Swift.Float, _ animation: any Metal2D.TimelineAnimatable, duration: Swift.Float) -> Self
+  @discardableResult
+  public func onComplete(_ handler: @escaping () -> Swift.Void) -> Self
+  @discardableResult
+  public func onLoop(_ handler: @escaping (Swift.Int) -> Swift.Void) -> Self
+  public func update(deltaTime: Swift.Float)
+  public func restart()
+  public func pause()
+  public func resume()
+  public func seekTo(_ time: Swift.Float)
+  public var progress: Swift.Float {
+    get
+  }
+  public var isActive: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Metal2D.Timeline : Metal2D.TimelineAnimatable {
+  public var isComplete: Swift.Bool {
+    get
+  }
+}
+extension Metal2D.Timeline {
+  public static func stagger(_ animations: [any Metal2D.TimelineAnimatable], interval: Swift.Float, duration: Swift.Float) -> Metal2D.Timeline
+  public static func parallel(_ animations: [any Metal2D.TimelineAnimatable], duration: Swift.Float) -> Metal2D.Timeline
+  public static func sequence(_ animations: [any Metal2D.TimelineAnimatable], duration: Swift.Float) -> Metal2D.Timeline
+  public static func sequence(_ items: [(animation: any Metal2D.TimelineAnimatable, duration: Swift.Float)]) -> Metal2D.Timeline
+}
+extension Metal2D.Timeline {
+  public struct MusicalTiming {
+    public let bpm: Swift.Float
+    public init(bpm: Swift.Float)
+    public var beat: Swift.Float {
+      get
+    }
+    public var measure: Swift.Float {
+      get
+    }
+    public var half: Swift.Float {
+      get
+    }
+    public var quarter: Swift.Float {
+      get
+    }
+    public var eighth: Swift.Float {
+      get
+    }
+    public var sixteenth: Swift.Float {
+      get
+    }
+    public var triplet: Swift.Float {
+      get
+    }
+  }
+  public static func stagger(_ animations: [any Metal2D.TimelineAnimatable], bpm: Swift.Float, noteValue: Swift.KeyPath<Metal2D.Timeline.MusicalTiming, Swift.Float>, duration: Swift.Float) -> Metal2D.Timeline
+}
+public class Tween<T> where T : Metal2D.Animatable {
+  public enum State {
+    case pending
+    case running
+    case completed
+    case cancelled
+    public static func == (a: Metal2D.Tween<T>.State, b: Metal2D.Tween<T>.State) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var state: Metal2D.Tween<T>.State {
+    get
+  }
+  public var currentValue: T {
+    get
+  }
+  public init(from: T, to: T, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0)
+  @discardableResult
+  public func onUpdate(_ handler: @escaping (T) -> Swift.Void) -> Self
+  @discardableResult
+  public func onComplete(_ handler: @escaping () -> Swift.Void) -> Self
+  public func update(deltaTime: Swift.Float)
+  public func cancel()
+  public func restart()
+  public func reversed() -> Metal2D.Tween<T>
+  public var progress: Swift.Float {
+    get
+  }
+  public var isActive: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+extension Metal2D.Tween : Metal2D.TimelineAnimatable {
+  public var isComplete: Swift.Bool {
+    get
+  }
+}
+extension Metal2D.Tween where T == Swift.Float {
+  public static func animate(_ binding: @escaping (Swift.Float) -> Swift.Void, from: Swift.Float, to: Swift.Float, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0) -> Metal2D.Tween<Swift.Float>
+}
+extension Metal2D.Tween where T == Metal2D.Vector2D {
+  public static func animate(_ binding: @escaping (Metal2D.Vector2D) -> Swift.Void, from: Metal2D.Vector2D, to: Metal2D.Vector2D, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0) -> Metal2D.Tween<Metal2D.Vector2D>
+}
+extension Metal2D.Tween where T == Metal2D.Color {
+  public static func animate(_ binding: @escaping (Metal2D.Color) -> Swift.Void, from: Metal2D.Color, to: Metal2D.Color, duration: Swift.Float, easing: Metal2D.Easing = .easeInOutQuad, delay: Swift.Float = 0) -> Metal2D.Tween<Metal2D.Color>
+}
+public struct CandlestickData {
+  public let timestamp: Foundation.TimeInterval
+  public let open: Swift.Float
+  public let high: Swift.Float
+  public let low: Swift.Float
+  public let close: Swift.Float
+  public let volume: Swift.Float
+  public init(timestamp: Foundation.TimeInterval, open: Swift.Float, high: Swift.Float, low: Swift.Float, close: Swift.Float, volume: Swift.Float)
+}
+public struct LineChartPoint {
+  public let x: Swift.Float
+  public let y: Swift.Float
+  public init(x: Swift.Float, y: Swift.Float)
+}
+public struct VolumeBar {
+  public let x: Swift.Float
+  public let volume: Swift.Float
+  public let color: Metal2D.Color
+  public init(x: Swift.Float, volume: Swift.Float, color: Metal2D.Color)
+}
+extension Metal2D.Graphics {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func candlestickChart(data: [Metal2D.CandlestickData], bounds: CoreFoundation.CGRect, priceRange: (min: Swift.Float, max: Swift.Float)? = nil, timeRange: (start: Foundation.TimeInterval, end: Foundation.TimeInterval)? = nil, candleWidth: Swift.Float = 8.0, spacing: Swift.Float = 2.0, upColor: Metal2D.Color = .green, downColor: Metal2D.Color = .red, wickColor: Metal2D.Color = .gray)
+  #endif
+  public func smoothLineChart(points: [Metal2D.LineChartPoint], bounds: CoreFoundation.CGRect, color: Metal2D.Color = .blue, thickness: Swift.Float = 2.0, smooth: Swift.Bool = true, fillArea: Swift.Bool = false, fillColor: Metal2D.Color = .clear)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func volumeHistogram(volumes: [Metal2D.VolumeBar], bounds: CoreFoundation.CGRect, maxVolume: Swift.Float? = nil)
+  #endif
+  public func drawGrid(bounds: CoreFoundation.CGRect, xLines: Swift.Int = 10, yLines: Swift.Int = 10, color: Metal2D.Color = .gray, thickness: Swift.Float = 0.5, style: Metal2D.GridStyle = .solid)
+  public func drawAxes(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float, xLabels: [Swift.String] = [], yLabels: [Swift.String] = [], fontSize: Swift.Float = 10, labelColor: Metal2D.Color = .white, axisColor: Metal2D.Color = .white, axisThickness: Swift.Float = 1.0)
+  public func drawAxes(bounds: CoreFoundation.CGRect, xLabels: [Swift.String] = [], yLabels: [Swift.String] = [], fontSize: Swift.Float = 10, labelColor: Metal2D.Color = .white, axisColor: Metal2D.Color = .white, axisThickness: Swift.Float = 1.0)
+  public func movingAverage(data: [Swift.Float], period: Swift.Int, bounds: CoreFoundation.CGRect, color: Metal2D.Color = .blue, thickness: Swift.Float = 1.5)
+  public func bollingerBands(data: [Swift.Float], period: Swift.Int = 20, standardDeviations: Swift.Float = 2.0, bounds: CoreFoundation.CGRect, centerColor: Metal2D.Color = .blue, bandColor: Metal2D.Color = .gray, fillColor: Metal2D.Color = .clear)
+}
+public enum GridStyle {
+  case solid
+  case dashed
+  public static func == (a: Metal2D.GridStyle, b: Metal2D.GridStyle) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct CircularBuffer<Element> {
+  public let capacity: Swift.Int
+  public var count: Swift.Int {
+    get
+  }
+  public var isEmpty: Swift.Bool {
+    get
+  }
+  public var isFull: Swift.Bool {
+    get
+  }
+  public init(capacity: Swift.Int)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public mutating func append(_ element: Element) -> Element?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public mutating func removeFirst() -> Element?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var first: Element? {
+    get
+  }
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var last: Element? {
+    get
+  }
+  #endif
+  public subscript(index: Swift.Int) -> Element {
+    get
+  }
+  public func toArray() -> [Element]
+  public mutating func removeAll()
+}
+extension Metal2D.CircularBuffer : Swift.Sequence {
+  public func makeIterator() -> Metal2D.CircularBufferIterator<Element>
+  public typealias Iterator = Metal2D.CircularBufferIterator<Element>
+}
+public struct CircularBufferIterator<Element> : Swift.IteratorProtocol {
+  #if compiler(>=5.3) && $NonescapableTypes
+  public mutating func next() -> Element?
+  #endif
+}
+extension Metal2D.CircularBuffer : Swift.Collection {
+  public var startIndex: Swift.Int {
+    get
+  }
+  public var endIndex: Swift.Int {
+    get
+  }
+  public func index(after i: Swift.Int) -> Swift.Int
+  public typealias Index = Swift.Int
+  public typealias Indices = Swift.DefaultIndices<Metal2D.CircularBuffer<Element>>
+  public typealias SubSequence = Swift.Slice<Metal2D.CircularBuffer<Element>>
+}
+public protocol ColorProvider {
+  var r: Swift.Float { get set }
+  var b: Swift.Float { get set }
+  var g: Swift.Float { get set }
+  var a: Swift.Float { get set }
+}
+extension Metal2D.Color : Swift.CaseIterable {
+  public static var allCases: [Metal2D.Color] {
+    get
+  }
+  public typealias AllCases = [Metal2D.Color]
+}
+public enum Color : Swift.Sendable {
+  public var value: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var r: Swift.Float {
+    get
+  }
+  public var g: Swift.Float {
+    get
+  }
+  public var b: Swift.Float {
+    get
+  }
+  public var a: Swift.Float {
+    get
+  }
+  public func callAsFunction(_ r: Swift.Float, _ g: Swift.Float, _ b: Swift.Float, _ a: Swift.Float) -> Metal2D.Color
+  case rgb(_: Swift.Float, _: Swift.Float, _: Swift.Float)
+  case rgba(_: Swift.Float, _: Swift.Float, _: Swift.Float, _: Swift.Float)
+  case clear
+  case cloudyBlue
+  case darkPastelGreen
+  case dust
+  case electricLime
+  case freshGreen
+  case lightEggplant
+  case nastyGreen
+  case reallyLightBlue
+  case tea
+  case warmPurple
+  case yellowishTan
+  case cement
+  case darkGrassGreen
+  case dustyTeal
+  case greyTeal
+  case macaroniAndCheese
+  case pinkishTan
+  case spruce
+  case strongBlue
+  case toxicGreen
+  case windowsBlue
+  case blueBlue
+  case blueWithAHintOfPurple
+  case booger
+  case brightSeaGreen
+  case darkGreenBlue
+  case deepTurquoise
+  case greenTeal
+  case strongPink
+  case bland
+  case deepAqua
+  case lavenderPink
+  case lightMossGreen
+  case lightSeafoamGreen
+  case oliveYellow
+  case pigPink
+  case deepLilac
+  case desert
+  case dustyLavender
+  case purpleyGrey
+  case purply
+  case candyPink
+  case lightPastelGreen
+  case boringGreen
+  case kiwiGreen
+  case lightGreyGreen
+  case orangePink
+  case teaGreen
+  case veryLightBrown
+  case eggShell
+  case eggplantPurple
+  case powderPink
+  case reddishGrey
+  case babyShitBrown
+  case liliac
+  case stormyBlue
+  case uglyBrown
+  case custard
+  case darkishPink
+  case deepBrown
+  case greenishBeige
+  case manilla
+  case offBlue
+  case battleshipGrey
+  case brownyGreen
+  case bruise
+  case kelleyGreen
+  case sicklyYellow
+  case sunnyYellow
+  case azul
+  case darkgreen
+  case greenYellow
+  case lichen
+  case lightLightGreen
+  case paleGold
+  case sunYellow
+  case tanGreen
+  case burple
+  case butterscotch
+  case toupe
+  case darkCream
+  case indianRed
+  case lightLavendar
+  case poisonGreen
+  case babyPukeGreen
+  case brightYellowGreen
+  case charcoalGrey
+  case squash
+  case cinnamon
+  case lightPeaGreen
+  case radioactiveGreen
+  case rawSienna
+  case babyPurple
+  case cocoa
+  case lightRoyalBlue
+  case orangeish
+  case rustBrown
+  case sandBrown
+  case swamp
+  case tealishGreen
+  case burntSiena
+  case camo
+  case duskBlue
+  case fern
+  case oldRose
+  case paleLightGreen
+  case peachyPink
+  case rosyPink
+  case lightBluishGreen
+  case lightBrightGreen
+  case lightNeonGreen
+  case lightSeafoam
+  case tiffanyBlue
+  case washedOutGreen
+  case brownyOrange
+  case niceBlue
+  case sapphire
+  case greyishTeal
+  case orangeyYellow
+  case parchment
+  case straw
+  case veryDarkBrown
+  case terracota
+  case uglyBlue
+  case clearBlue
+  case creme
+  case foamGreen
+  case greyGreen
+  case lightGold
+  case seafoamBlue
+  case topaz
+  case violetPink
+  case wintergreen
+  case yellowTan
+  case darkFuchsia
+  case indigoBlue
+  case lightYellowishGreen
+  case paleMagenta
+  case richPurple
+  case sunflowerYellow
+  case greenBlue
+  case leather
+  case racingGreen
+  case vividPurple
+  case darkRoyalBlue
+  case hazel
+  case mutedPink
+  case boogerGreen
+  case canary
+  case coolGrey
+  case darkTaupe
+  case darkishPurple
+  case trueGreen
+  case coralPink
+  case darkSage
+  case darkSlateBlue
+  case flatBlue
+  case mushroom
+  case richBlue
+  case dirtyPurple
+  case greenblue
+  case ickyGreen
+  case lightKhaki
+  case warmBlue
+  case darkHotPink
+  case deepSeaBlue
+  case carmine
+  case darkYellowGreen
+  case palePeach
+  case plumPurple
+  case goldenRod
+  case neonRed
+  case oldPink
+  case veryPaleBlue
+  case bloodOrange
+  case grapefruit
+  case sandYellow
+  case clayBrown
+  case darkBlueGrey
+  case flatGreen
+  case lightGreenBlue
+  case warmPink
+  case dodgerBlue
+  case grossGreen
+  case ice
+  case metallicBlue
+  case paleSalmon
+  case sapGreen
+  case algae
+  case blueyGrey
+  case greenyGrey
+  case highlighterGreen
+  case lightLightBlue
+  case lightMint
+  case rawUmber
+  case vividBlue
+  case deepLavender
+  case dullTeal
+  case lightGreenishBlue
+  case mudGreen
+  case pinky
+  case redWine
+  case shitGreen
+  case tanBrown
+  case darkblue
+  case rosa
+  case lipstick
+  case paleMauve
+  case claret
+  case dandelion
+  case orangered
+  case poopGreen
+  case ruby
+  case dark
+  case greenishTurquoise
+  case pastelRed
+  case pissYellow
+  case brightCyan
+  case darkCoral
+  case algaeGreen
+  case darkishRed
+  case reddyBrown
+  case blushPink
+  case camouflageGreen
+  case lawnGreen
+  case putty
+  case vibrantBlue
+  case darkSand
+  case purpleBlue
+  case saffron
+  case twilight
+  case warmBrown
+  case bluegrey
+  case bubbleGumPink
+  case duckEggBlue
+  case greenishCyan
+  case petrol
+  case royal
+  case butter
+  case dustyOrange
+  case offYellow
+  case paleOliveGreen
+  case orangish
+  case leaf
+  case lightBlueGrey
+  case driedBlood
+  case lightishPurple
+  case rustyRed
+  case lavenderBlue
+  case lightGrassGreen
+  case lightMintGreen
+  case sunflower
+  case velvet
+  case brickOrange
+  case lightishRed
+  case pureBlue
+  case twilightBlue
+  case violetRed
+  case yellowyBrown
+  case carnation
+  case muddyYellow
+  case darkSeafoamGreen
+  case deepRose
+  case dustyRed
+  case greyBlue
+  case lemonLime
+  case purplePink
+  case brownYellow
+  case purpleBrown
+  case wisteria
+  case bananaYellow
+  case lipstickRed
+  case waterBlue
+  case brownGrey
+  case vibrantPurple
+  case babyGreen
+  case barfGreen
+  case eggshellBlue
+  case sandyYellow
+  case coolGreen
+  case pale
+  case blueGrey
+  case hotMagenta
+  case greyblue
+  case purpley
+  case babyShitGreen
+  case brownishPink
+  case darkAquamarine
+  case diarrhea
+  case lightMustard
+  case paleSkyBlue
+  case turtleGreen
+  case brightOlive
+  case darkGreyBlue
+  case greenyBrown
+  case lemonGreen
+  case lightPeriwinkle
+  case seaweedGreen
+  case sunshineYellow
+  case uglyPurple
+  case mediumPink
+  case pukeBrown
+  case veryLightPink
+  case viridian
+  case bile
+  case fadedYellow
+  case veryPaleGreen
+  case vibrantGreen
+  case brightLime
+  case spearmint
+  case lightAquamarine
+  case lightSage
+  case yellowgreen
+  case babyPoo
+  case darkSeafoam
+  case deepTeal
+  case heather
+  case rustOrange
+  case dirtyBlue
+  case fernGreen
+  case brightLilac
+  case weirdGreen
+  case peacockBlue
+  case avocadoGreen
+  case fadedOrange
+  case grapePurple
+  case hotGreen
+  case limeYellow
+  case mango
+  case shamrock
+  case bubblegum
+  case purplishBrown
+  case vomitYellow
+  case paleCyan
+  case keyLime
+  case tomatoRed
+  case lightgreen
+  case merlot
+  case nightBlue
+  case purpleishPink
+  case apple
+  case babyPoopGreen
+  case greenApple
+  case heliotrope
+  case yellowGreen
+  case almostBlack
+  case coolBlue
+  case leafyGreen
+  case mustardBrown
+  case dusk
+  case dullBrown
+  case frogGreen
+  case vividGreen
+  case brightLightGreen
+  case fluroGreen
+  case kiwi
+  case seaweed
+  case navyGreen
+  case ultramarineBlue
+  case iris
+  case pastelOrange
+  case yellowishOrange
+  case perrywinkle
+  case tealish
+  case darkPlum
+  case pear
+  case pinkishOrange
+  case midnightPurple
+  case lightUrple
+  case darkMint
+  case greenishTan
+  case lightBurgundy
+  case turquoiseBlue
+  case uglyPink
+  case sandy
+  case electricPink
+  case mutedPurple
+  case midGreen
+  case greyish
+  case neonYellow
+  case banana
+  case carnationPink
+  case tomato
+  case sea
+  case muddyBrown
+  case turquoiseGreen
+  case buff
+  case fawn
+  case mutedBlue
+  case paleRose
+  case darkMintGreen
+  case amethyst
+  case blueGreen
+  case chestnut
+  case sickGreen
+  case pea
+  case rustyOrange
+  case stone
+  case roseRed
+  case paleAqua
+  case deepOrange
+  case earth
+  case mossyGreen
+  case grassyGreen
+  case paleLimeGreen
+  case lightGreyBlue
+  case paleGrey
+  case asparagus
+  case blueberry
+  case purpleRed
+  case paleLime
+  case greenishTeal
+  case caramel
+  case deepMagenta
+  case lightPeach
+  case milkChocolate
+  case ocher
+  case offGreen
+  case purplyPink
+  case lightblue
+  case duskyBlue
+  case golden
+  case lightBeige
+  case butterYellow
+  case duskyPurple
+  case frenchBlue
+  case uglyYellow
+  case greenyYellow
+  case orangishRed
+  case shamrockGreen
+  case orangishBrown
+  case treeGreen
+  case deepViolet
+  case gunmetal
+  case bluePurple
+  case cherry
+  case sandyBrown
+  case warmGrey
+  case darkIndigo
+  case midnight
+  case blueyGreen
+  case greyPink
+  case softPurple
+  case blood
+  case brownRed
+  case mediumGrey
+  case berry
+  case poo
+  case purpleyPink
+  case lightSalmon
+  case snot
+  case easterPurple
+  case lightYellowGreen
+  case darkNavyBlue
+  case drab
+  case lightRose
+  case rouge
+  case purplishRed
+  case slimeGreen
+  case babyPoop
+  case irishGreen
+  case pinkPurple
+  case darkNavy
+  case greenyBlue
+  case lightPlum
+  case pinkishGrey
+  case dirtyOrange
+  case rustRed
+  case paleLilac
+  case orangeyRed
+  case primaryBlue
+  case kermitGreen
+  case brownishPurple
+  case murkyGreen
+  case wheat
+  case veryDarkPurple
+  case bottleGreen
+  case watermelon
+  case deepSkyBlue
+  case fireEngineRed
+  case yellowOchre
+  case pumpkinOrange
+  case paleOlive
+  case lightLilac
+  case lightishGreen
+  case carolinaBlue
+  case mulberry
+  case shockingPink
+  case auburn
+  case brightLimeGreen
+  case celadon
+  case pinkishBrown
+  case pooBrown
+  case brightSkyBlue
+  case celery
+  case dirtBrown
+  case strawberry
+  case darkLime
+  case copper
+  case mediumBrown
+  case mutedGreen
+  case robinsEgg
+  case brightAqua
+  case brightLavender
+  case ivory
+  case veryLightPurple
+  case lightNavy
+  case pinkRed
+  case oliveBrown
+  case poopBrown
+  case mustardGreen
+  case oceanGreen
+  case veryDarkBlue
+  case dustyGreen
+  case lightNavyBlue
+  case mintyGreen
+  case adobe
+  case barney
+  case jadeGreen
+  case brightLightBlue
+  case lightLime
+  case darkKhaki
+  case orangeYellow
+  case ocre
+  case maize
+  case fadedPink
+  case britishRacingGreen
+  case sandstone
+  case mudBrown
+  case lightSeaGreen
+  case robinEggBlue
+  case aquaMarine
+  case darkSeaGreen
+  case softPink
+  case orangeyBrown
+  case cherryRed
+  case burntYellow
+  case brownishGrey
+  case camel
+  case purplishGrey
+  case marine
+  case greyishPink
+  case paleTurquoise
+  case pastelYellow
+  case blueyPurple
+  case canaryYellow
+  case fadedRed
+  case sepia
+  case coffee
+  case brightMagenta
+  case mocha
+  case ecru
+  case purpleish
+  case cranberry
+  case darkishGreen
+  case brownOrange
+  case duskyRose
+  case melon
+  case sicklyGreen
+  case silver
+  case purplyBlue
+  case purpleishBlue
+  case hospitalGreen
+  case shitBrown
+  case midBlue
+  case amber
+  case easterGreen
+  case softBlue
+  case ceruleanBlue
+  case goldenBrown
+  case brightTurquoise
+  case redPink
+  case redPurple
+  case greyishBrown
+  case vermillion
+  case russet
+  case steelGrey
+  case lighterPurple
+  case brightViolet
+  case prussianBlue
+  case slateGreen
+  case dirtyPink
+  case darkBlueGreen
+  case pine
+  case yellowyGreen
+  case darkGold
+  case bluish
+  case darkishBlue
+  case dullRed
+  case pinkyRed
+  case bronze
+  case paleTeal
+  case militaryGreen
+  case barbiePink
+  case bubblegumPink
+  case peaSoupGreen
+  case darkMustard
+  case shit
+  case mediumPurple
+  case veryDarkGreen
+  case dirt
+  case duskyPink
+  case redViolet
+  case lemonYellow
+  case pistachio
+  case dullYellow
+  case darkLimeGreen
+  case denimBlue
+  case tealBlue
+  case lightishBlue
+  case purpleyBlue
+  case lightIndigo
+  case swampGreen
+  case brownGreen
+  case darkMaroon
+  case hotPurple
+  case darkForestGreen
+  case fadedBlue
+  case drabGreen
+  case lightLimeGreen
+  case snotGreen
+  case yellowish
+  case lightBlueGreen
+  case bordeaux
+  case lightMauve
+  case ocean
+  case marigold
+  case muddyGreen
+  case dullOrange
+  case steel
+  case electricPurple
+  case fluorescentGreen
+  case yellowishBrown
+  case blush
+  case softGreen
+  case brightOrange
+  case lemon
+  case purpleGrey
+  case acidGreen
+  case paleLavender
+  case violetBlue
+  case lightForestGreen
+  case burntRed
+  case khakiGreen
+  case cerise
+  case fadedPurple
+  case apricot
+  case darkOliveGreen
+  case greyBrown
+  case greenGrey
+  case trueBlue
+  case paleViolet
+  case periwinkleBlue
+  case lightSkyBlue
+  case blurple
+  case greenBrown
+  case bluegreen
+  case brightTeal
+  case brownishYellow
+  case peaSoup
+  case forest
+  case barneyPurple
+  case ultramarine
+  case purplish
+  case pukeYellow
+  case bluishGrey
+  case darkPeriwinkle
+  case darkLilac
+  case reddish
+  case lightMaroon
+  case dustyPurple
+  case terraCotta
+  case avocado
+  case marineBlue
+  case tealGreen
+  case slateGrey
+  case lighterGreen
+  case electricGreen
+  case dustyBlue
+  case goldenYellow
+  case brightYellow
+  case lightLavender
+  case umber
+  case poop
+  case darkPeach
+  case jungleGreen
+  case eggshell
+  case denim
+  case yellowBrown
+  case dullPurple
+  case chocolateBrown
+  case wineRed
+  case neonBlue
+  case dirtyGreen
+  case lightTan
+  case iceBlue
+  case cadetBlue
+  case darkMauve
+  case veryLightBlue
+  case greyPurple
+  case pastelPink
+  case veryLightGreen
+  case darkSkyBlue
+  case evergreen
+  case dullPink
+  case aubergine
+  case mahogany
+  case reddishOrange
+  case deepGreen
+  case vomitGreen
+  case dustyPink
+  case fadedGreen
+  case camoGreen
+  case pinkyPurple
+  case brownishRed
+  case darkRose
+  case mud
+  case brownish
+  case emeraldGreen
+  case paleBrown
+  case dullBlue
+  case burntUmber
+  case mediumGreen
+  case clay
+  case lightAqua
+  case lightOliveGreen
+  case brownishOrange
+  case darkAqua
+  case purplishPink
+  case darkSalmon
+  case greenishGrey
+  case jade
+  case uglyGreen
+  case darkBeige
+  case emerald
+  case paleRed
+  case lightMagenta
+  case sky
+  case lightCyan
+  case yellowOrange
+  case reddishPurple
+  case reddishPink
+  case orchid
+  case dirtyYellow
+  case orangeRed
+  case deepRed
+  case orangeBrown
+  case cobaltBlue
+  case neonPink
+  case rosePink
+  case greyishPurple
+  case raspberry
+  case aquaGreen
+  case salmonPink
+  case tangerine
+  case brownishGreen
+  case redBrown
+  case greenishBrown
+  case pumpkin
+  case pineGreen
+  case charcoal
+  case babyPink
+  case cornflower
+  case blueViolet
+  case chocolate
+  case greyishGreen
+  case scarlet
+  case darkOlive
+  case sienna
+  case pastelPurple
+  case terracotta
+  case aquaBlue
+  case sageGreen
+  case bloodRed
+  case deepPink
+  case grass
+  case moss
+  case pastelBlue
+  case bluishGreen
+  case darkTan
+  case greenishBlue
+  case paleOrange
+  case vomit
+  case forrestGreen
+  case darkLavender
+  case darkViolet
+  case darkCyan
+  case oliveDrab
+  case pinkish
+  case cobalt
+  case neonPurple
+  case lightTurquoise
+  case appleGreen
+  case dullGreen
+  case wine
+  case powderBlue
+  case offWhite
+  case electricBlue
+  case darkTurquoise
+  case azure
+  case brightRed
+  case pinkishRed
+  case cornflowerBlue
+  case lightOlive
+  case grape
+  case greyishBlue
+  case purplishBlue
+  case yellowishGreen
+  case greenishYellow
+  case mediumBlue
+  case dustyRose
+  case lightViolet
+  case midnightBlue
+  case bluishPurple
+  case redOrange
+  case darkMagenta
+  case greenish
+  case oceanBlue
+  case coral
+  case cream
+  case reddishBrown
+  case burntSienna
+  case brick
+  case sage
+  case white
+  case robinsEggBlue
+  case mossGreen
+  case steelBlue
+  case eggplant
+  case lightYellow
+  case leafGreen
+  case lightGrey
+  case puke
+  case pinkishPurple
+  case seaBlue
+  case palePurple
+  case slateBlue
+  case hunterGreen
+  case fuchsia
+  case crimson
+  case paleYellow
+  case ochre
+  case mustardYellow
+  case lightRed
+  case cerulean
+  case palePink
+  case deepBlue
+  case rust
+  case lightTeal
+  case slate
+  case goldenrod
+  case darkYellow
+  case darkGrey
+  case armyGreen
+  case seafoam
+  case puce
+  case springGreen
+  case darkOrange
+  case sand
+  case pastelGreen
+  case mint
+  case lightOrange
+  case brightPink
+  case chartreuse
+  case deepPurple
+  case darkBrown
+  case taupe
+  case peaGreen
+  case pukeGreen
+  case kellyGreen
+  case seafoamGreen
+  case khaki
+  case burgundy
+  case darkTeal
+  case brickRed
+  case royalPurple
+  case plum
+  case mintGreen
+  case gold
+  case babyBlue
+  case brightPurple
+  case darkRed
+  case paleBlue
+  case grassGreen
+  case navy
+  case aquamarine
+  case burntOrange
+  case neonGreen
+  case brightBlue
+  case rose
+  case lightPink
+  case mustard
+  case indigo
+  case lime
+  case seaGreen
+  case periwinkle
+  case darkPink
+  case oliveGreen
+  case peach
+  case paleGreen
+  case lightBrown
+  case hotPink
+  case black
+  case lilac
+  case navyBlue
+  case royalBlue
+  case beige
+  case salmon
+  case olive
+  case maroon
+  case brightGreen
+  case darkPurple
+  case mauve
+  case forestGreen
+  case aqua
+  case cyan
+  case tan
+  case darkBlue
+  case lavender
+  case turquoise
+  case darkGreen
+  case violet
+  case lightPurple
+  case limeGreen
+  case grey
+  case skyBlue
+  case yellow
+  case magenta
+  case lightGreen
+  case orange
+  case teal
+  case lightBlue
+  case red
+  case brown
+  case pink
+  case blue
+  case green
+  case purple
+  case aliceblue
+  case antiquewhite
+  case bisque
+  case blanchedalmond
+  case blueviolet
+  case burlywood
+  case cadetblue
+  case cornflowerblue
+  case cornsilk
+  case darkcyan
+  case darkgoldenrod
+  case darkgray
+  case darkgrey
+  case darkkhaki
+  case darkmagenta
+  case darkolivegreen
+  case darkorange
+  case darkorchid
+  case darkred
+  case darksalmon
+  case darkseagreen
+  case darkslateblue
+  case darkslategray
+  case darkslategrey
+  case darkturquoise
+  case darkviolet
+  case deeppink
+  case deepskyblue
+  case dimgray
+  case dimgrey
+  case dodgerblue
+  case firebrick
+  case floralwhite
+  case forestgreen
+  case gainsboro
+  case ghostwhite
+  case gray
+  case greenyellow
+  case honeydew
+  case hotpink
+  case indianred
+  case lavenderblush
+  case lawngreen
+  case lemonchiffon
+  case lightcoral
+  case lightcyan
+  case lightgoldenrodyellow
+  case lightgray
+  case lightgrey
+  case lightpink
+  case lightsalmon
+  case lightseagreen
+  case lightskyblue
+  case lightslategray
+  case lightslategrey
+  case lightsteelblue
+  case lightyellow
+  case limegreen
+  case linen
+  case mediumaquamarine
+  case mediumblue
+  case mediumorchid
+  case mediumpurple
+  case mediumseagreen
+  case mediumslateblue
+  case mediumspringgreen
+  case mediumturquoise
+  case mediumvioletred
+  case midnightblue
+  case mintcream
+  case mistyrose
+  case moccasin
+  case navajowhite
+  case oldlace
+  case olivedrab
+  case palegoldenrod
+  case palegreen
+  case paleturquoise
+  case palevioletred
+  case papayawhip
+  case peachpuff
+  case peru
+  case powderblue
+  case rebeccapurple
+  case rosybrown
+  case royalblue
+  case saddlebrown
+  case sandybrown
+  case seagreen
+  case seashell
+  case skyblue
+  case slateblue
+  case slategray
+  case slategrey
+  case snow
+  case springgreen
+  case steelblue
+  case thistle
+  case whitesmoke
+}
+public enum ShaderEffect : Swift.Equatable, Swift.Sendable {
+  case flat
+  case textured
+  case sphere(lightDirection: simd.simd_float3 = simd_float3(0.3, -0.5, 1.0), ambient: Swift.Float = 0.15, shininess: Swift.Float = 32.0)
+  case glow(intensity: Swift.Float = 3.0, glowColor: simd.simd_float4 = simd_float4(1, 1, 1, 1))
+  case emboss(lightDirection: simd.simd_float3 = simd_float3(0.3, -0.5, 1.0), depth: Swift.Float = 0.3)
+  case custom(id: Swift.String)
+  public static func == (a: Metal2D.ShaderEffect, b: Metal2D.ShaderEffect) -> Swift.Bool
+}
+public struct EffectUniforms : Swift.Equatable {
+  public var lightDirection: simd.simd_float3
+  public var time: Swift.Float
+  public var intensity: Swift.Float
+  public var shininess: Swift.Float
+  public var depth: Swift.Float
+  public var _pad: Swift.Float
+  public var auxColor: simd.simd_float4
+  public var objectBounds: simd.simd_float4
+  public init()
+  public static func from(effect: Metal2D.ShaderEffect, bounds: simd.simd_float4, time: Swift.Float = 0) -> Metal2D.EffectUniforms
+  public static func == (a: Metal2D.EffectUniforms, b: Metal2D.EffectUniforms) -> Swift.Bool
+}
+public struct ClipRect : Swift.Equatable, Swift.Sendable {
+  public let x: Swift.Int
+  public let y: Swift.Int
+  public let width: Swift.Int
+  public let height: Swift.Int
+  public init(x: Swift.Int, y: Swift.Int, width: Swift.Int, height: Swift.Int)
+  public init(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float)
+  public func intersected(with other: Metal2D.ClipRect) -> Metal2D.ClipRect
+  public static func == (a: Metal2D.ClipRect, b: Metal2D.ClipRect) -> Swift.Bool
+}
+public protocol DrawingPanel {
+  var bounds: CoreFoundation.CGRect { get set }
+  func setup()
+  func draw(_ graphics: Metal2D.Graphics)
+  func update(deltaTime: Swift.Float)
+  func handleTap(at point: CoreFoundation.CGPoint)
+  func handlePanBegan(at point: CoreFoundation.CGPoint)
+  func handlePanChanged(at point: CoreFoundation.CGPoint, translation: CoreFoundation.CGPoint, velocity: CoreFoundation.CGPoint)
+  func handlePanEnded(at point: CoreFoundation.CGPoint, velocity: CoreFoundation.CGPoint)
+  func handleTouchBegan(id: Swift.Int, at point: CoreFoundation.CGPoint)
+  func handleTouchMoved(id: Swift.Int, at point: CoreFoundation.CGPoint)
+  func handleTouchEnded(id: Swift.Int, at point: CoreFoundation.CGPoint)
+}
+extension Metal2D.DrawingPanel {
+  public func handleTap(at point: CoreFoundation.CGPoint)
+  public func handlePanBegan(at point: CoreFoundation.CGPoint)
+  public func handlePanChanged(at point: CoreFoundation.CGPoint, translation: CoreFoundation.CGPoint, velocity: CoreFoundation.CGPoint)
+  public func handlePanEnded(at point: CoreFoundation.CGPoint, velocity: CoreFoundation.CGPoint)
+  public func handleTouchBegan(id: Swift.Int, at point: CoreFoundation.CGPoint)
+  public func handleTouchMoved(id: Swift.Int, at point: CoreFoundation.CGPoint)
+  public func handleTouchEnded(id: Swift.Int, at point: CoreFoundation.CGPoint)
+}
+final public class FontMetrics : @unchecked Swift.Sendable {
+  final public let ascent: Swift.Float
+  final public let descent: Swift.Float
+  final public let leading: Swift.Float
+  final public let lineHeight: Swift.Float
+  final public let unitsPerEm: Swift.Float
+  public init(name: Swift.String, size: Swift.Float)
+  public static func system(size: Swift.Float) -> Metal2D.FontMetrics
+  public static func monospace(size: Swift.Float) -> Metal2D.FontMetrics
+  final public func width(_ text: Swift.String) -> Swift.Float
+  final public func advances(_ text: Swift.String) -> [Swift.Float]
+  final public func boundingSize(_ text: Swift.String) -> simd.simd_float2
+  final public func charWidth(_ char: Swift.Character) -> Swift.Float
+  final public func kerning(left: Swift.Character, right: Swift.Character) -> Swift.Float
+  final public var capHeight: Swift.Float {
+    get
+  }
+  final public var xHeight: Swift.Float {
+    get
+  }
+  @objc deinit
+}
+public struct FrameStats : Swift.Sendable {
+  public var verticesSubmitted: Swift.Int
+  public var indicesSubmitted: Swift.Int
+  public var drawCalls: Swift.Int
+  public var pipelineSwitches: Swift.Int
+  public var vertexBufferCapacity: Swift.Int
+  public var indexBufferCapacity: Swift.Int
+  public var vertexUtilization: Swift.Float {
+    get
+  }
+  public var indexUtilization: Swift.Float {
+    get
+  }
+  public var cpuFrameTimeMs: Swift.Float
+  public var gpuFrameTimeMs: Swift.Float
+  public var postProcessPasses: Swift.Int
+  public var summary: Swift.String {
+    get
+  }
+}
+public struct BarData {
+  public let x: Swift.Float
+  public let y: Swift.Float
+  public let width: Swift.Float
+  public let height: Swift.Float
+  public init(x: Swift.Float, y: Swift.Float, width: Swift.Float = 20, height: Swift.Float)
+}
+public enum LineCap {
+  case butt
+  case round
+  case square
+  public static func == (a: Metal2D.LineCap, b: Metal2D.LineCap) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum LineJoin {
+  case miter
+  case round
+  case bevel
+  public static func == (a: Metal2D.LineJoin, b: Metal2D.LineJoin) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum AntiAliasQuality {
+  case off
+  case fast
+  case quality
+  public static func == (a: Metal2D.AntiAliasQuality, b: Metal2D.AntiAliasQuality) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class Graphics : @unchecked Swift.Sendable {
+  @usableFromInline
+  internal var vertices: [Metal2D.Vertex]
+  @usableFromInline
+  internal var indices: [Swift.UInt32]
+  public var fillColor: Metal2D.Color
+  public var strokeColor: Metal2D.Color
+  public var strokeWeight: Swift.Float
+  public var shouldFill: Swift.Bool
+  public var shouldStroke: Swift.Bool
+  public var globalAlpha: Swift.Float
+  public var cornerRadius: Swift.Float
+  public var lineCap: Metal2D.LineCap
+  public var lineJoin: Metal2D.LineJoin
+  public var antiAliasQuality: Metal2D.AntiAliasQuality
+  public var antiAliasWidth: Swift.Float
+  public var antiAlias: Swift.Bool {
+    get
+    set
+  }
+  public var width: Swift.Float
+  public var height: Swift.Float
+  public var layerManager: Metal2D.LayerManager! {
+    get
+  }
+  public var currentEffect: Metal2D.ShaderEffect {
+    get
+  }
+  public var elapsedTime: Swift.Float
+  #if compiler(>=5.3) && $NonescapableTypes
+  public var currentClipRect: Metal2D.ClipRect? {
+    get
+  }
+  #endif
+  public init()
+  public func fill(_ color: Metal2D.Color)
+  public func noFill()
+  public func stroke(_ color: Metal2D.Color)
+  public func noStroke()
+  public func strokeWeight(_ weight: Swift.Float)
+  public func alpha(_ alpha: Swift.Float)
+  public func corners(_ radius: Swift.Float)
+  public func rect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float)
+  public func roundedRect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, _ radius: Swift.Float)
+  public func ellipse(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float)
+  public func circle(_ x: Swift.Float, _ y: Swift.Float, _ radius: Swift.Float)
+  public func arc(_ x: Swift.Float, _ y: Swift.Float, _ radius: Swift.Float, _ startAngle: Swift.Float, _ endAngle: Swift.Float)
+  public func pie(_ x: Swift.Float, _ y: Swift.Float, _ radius: Swift.Float, _ startAngle: Swift.Float, _ endAngle: Swift.Float)
+  public func ring(_ x: Swift.Float, _ y: Swift.Float, _ innerRadius: Swift.Float, _ outerRadius: Swift.Float, _ startAngle: Swift.Float, _ endAngle: Swift.Float)
+  public func line(_ x1: Swift.Float, _ y1: Swift.Float, _ x2: Swift.Float, _ y2: Swift.Float)
+  public func point(_ x: Swift.Float, _ y: Swift.Float)
+  public func triangle(_ x1: Swift.Float, _ y1: Swift.Float, _ x2: Swift.Float, _ y2: Swift.Float, _ x3: Swift.Float, _ y3: Swift.Float)
+  public func quad(_ x1: Swift.Float, _ y1: Swift.Float, _ x2: Swift.Float, _ y2: Swift.Float, _ x3: Swift.Float, _ y3: Swift.Float, _ x4: Swift.Float, _ y4: Swift.Float)
+  public func polygon(_ points: [Metal2D.Vector2D])
+  public func polygon(_ points: [simd.simd_float2])
+  public func tint(_ color: Metal2D.Color)
+  public func tint(_ r: Swift.Float, _ g: Swift.Float, _ b: Swift.Float)
+  public func tint(_ r: Swift.Float, _ g: Swift.Float, _ b: Swift.Float, _ a: Swift.Float)
+  public func noTint()
+  public func imageRect(_ x: Swift.Float, _ y: Swift.Float, _ width: Swift.Float, _ height: Swift.Float)
+  public func imageRect(_ x: Swift.Float, _ y: Swift.Float, _ width: Swift.Float, _ height: Swift.Float, srcX: Swift.Float, srcY: Swift.Float, srcW: Swift.Float, srcH: Swift.Float)
+  public func imageRect(_ x: Swift.Float, _ y: Swift.Float, _ width: Swift.Float, _ height: Swift.Float, srcX: Swift.Float, srcY: Swift.Float, srcW: Swift.Float, srcH: Swift.Float, texWidth: Swift.Float, texHeight: Swift.Float)
+  public func verticalGradientRect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, topColor: Metal2D.Color, bottomColor: Metal2D.Color)
+  public func horizontalGradientRect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, leftColor: Metal2D.Color, rightColor: Metal2D.Color)
+  public func diagonalGradientRect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, topLeftColor: Metal2D.Color, bottomRightColor: Metal2D.Color)
+  public func fourCornerGradientRect(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, topLeft: Metal2D.Color, topRight: Metal2D.Color, bottomRight: Metal2D.Color, bottomLeft: Metal2D.Color)
+  public func radialGradientCircle(_ x: Swift.Float, _ y: Swift.Float, _ radius: Swift.Float, centerColor: Metal2D.Color, edgeColor: Metal2D.Color)
+  public func border(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, thickness: Swift.Float)
+  public func shadow(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, offsetX: Swift.Float = 2, offsetY: Swift.Float = 2, blur: Swift.Float = 4)
+  public func pushMatrix()
+  public func popMatrix()
+  public func translate(_ x: Swift.Float, _ y: Swift.Float)
+  public func rotate(_ angle: Swift.Float)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func scale(_ sx: Swift.Float, _ sy: Swift.Float? = nil)
+  #endif
+  public func shear(_ sx: Swift.Float, _ sy: Swift.Float)
+  public func getTransform() -> simd.simd_float3x3
+  public func setTransform(_ matrix: simd.simd_float3x3)
+  public func resetTransform()
+  public func applyTransform(_ matrix: simd.simd_float3x3)
+  public func inverseTransform() -> simd.simd_float3x3
+  public func screenToLocal(_ screenX: Swift.Float, _ screenY: Swift.Float) -> simd.simd_float2
+  public func beginPath()
+  public func closePath()
+  public func moveTo(_ x: Swift.Float, _ y: Swift.Float)
+  public func lineTo(_ x: Swift.Float, _ y: Swift.Float)
+  public func bezierCurveTo(_ cp1x: Swift.Float, _ cp1y: Swift.Float, _ cp2x: Swift.Float, _ cp2y: Swift.Float, _ x: Swift.Float, _ y: Swift.Float)
+  public func quadraticCurveTo(_ cpx: Swift.Float, _ cpy: Swift.Float, _ x: Swift.Float, _ y: Swift.Float)
+  public func arc(_ x: Swift.Float, _ y: Swift.Float, _ radius: Swift.Float, _ startAngle: Swift.Float, _ endAngle: Swift.Float, _ anticlockwise: Swift.Bool = false)
+  public func strokePath()
+  public func fillPath()
+  public func drawPath()
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func candlestick(_ x: Swift.Float, _ y: Swift.Float, _ width: Swift.Float, chartHeight: Swift.Float = 100, open: Swift.Float, high: Swift.Float, low: Swift.Float, close: Swift.Float, priceMin: Swift.Float? = nil, priceMax: Swift.Float? = nil, upColor: Metal2D.Color = .green, downColor: Metal2D.Color = .red, wickColor: Metal2D.Color = .gray)
+  #endif
+  public func candlestick(_ x: Swift.Float, _ y: Swift.Float, _ width: Swift.Float, open: Swift.Float, high: Swift.Float, low: Swift.Float, close: Swift.Float, scale: Swift.Float = 1.0)
+  public func lineChart(_ points: [Metal2D.Vector2D], thickness: Swift.Float = 2.0)
+  public func lineChart(_ points: [simd.simd_float2], thickness: Swift.Float = 2.0)
+  public func barChart(_ bars: [Metal2D.BarData])
+  public func gradient(_ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float, from: Metal2D.Color, to: Metal2D.Color, steps: Swift.Int = 10)
+  public func background(_ color: Metal2D.Color)
+  public func clear()
+  public func pushStyle()
+  public func popStyle()
+  public func pushClip(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float)
+  public func popClip()
+  public func shaderEffect(_ effect: Metal2D.ShaderEffect)
+  public func noEffect()
+  public func saveState()
+  public func restoreState()
+  public func random(_ min: Swift.Float, _ max: Swift.Float) -> Swift.Float
+  public func map(_ value: Swift.Float, _ start1: Swift.Float, _ stop1: Swift.Float, _ start2: Swift.Float, _ stop2: Swift.Float) -> Swift.Float
+  public func lerp(_ start: Swift.Float, _ stop: Swift.Float, _ amount: Swift.Float) -> Swift.Float
+  public func constrain(_ value: Swift.Float, _ min: Swift.Float, _ max: Swift.Float) -> Swift.Float
+  public func sin(_ angle: Swift.Float) -> Swift.Float
+  public func cos(_ angle: Swift.Float) -> Swift.Float
+  public func tan(_ angle: Swift.Float) -> Swift.Float
+  public func atan2(_ y: Swift.Float, _ x: Swift.Float) -> Swift.Float
+  public func radians(_ degrees: Swift.Float) -> Swift.Float
+  public func degrees(_ radians: Swift.Float) -> Swift.Float
+  public func noise(_ x: Swift.Float, _ y: Swift.Float = 0, _ z: Swift.Float = 0) -> Swift.Float
+  public func dist(_ x1: Swift.Float, _ y1: Swift.Float, _ x2: Swift.Float, _ y2: Swift.Float) -> Swift.Float
+  public func pointInRect(_ px: Swift.Float, _ py: Swift.Float, _ x: Swift.Float, _ y: Swift.Float, _ w: Swift.Float, _ h: Swift.Float) -> Swift.Bool
+  @inlinable internal func withVertexBuffer<T>(_ body: (Swift.UnsafeBufferPointer<Metal2D.Vertex>) -> T) -> T {
+    vertices.withUnsafeBufferPointer(body)
+  }
+  @inlinable internal func withIndexBuffer<T>(_ body: (Swift.UnsafeBufferPointer<Swift.UInt32>) -> T) -> T {
+    indices.withUnsafeBufferPointer(body)
+  }
+  @inlinable internal var vertexCount: Swift.Int {
+    get { vertices.count }
+  }
+  @inlinable internal var indexCount: Swift.Int {
+    get { indices.count }
+  }
+  @inlinable internal var hasGeometry: Swift.Bool {
+    get { !vertices.isEmpty && !indices.isEmpty }
+  }
+  public func batchRects(_ rects: [(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float, color: Metal2D.Color)])
+  public func batchLines(_ lines: [(x1: Swift.Float, y1: Swift.Float, x2: Swift.Float, y2: Swift.Float, color: Metal2D.Color)])
+  public func batchPoints(_ points: [(x: Swift.Float, y: Swift.Float, color: Metal2D.Color)], size: Swift.Float = 1.0)
+  public func batchCircles(_ circles: [(x: Swift.Float, y: Swift.Float, radius: Swift.Float, color: Metal2D.Color)], segments: Swift.Int = 16)
+  public func buildRectInstances(_ rects: [(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float, color: Metal2D.Color)]) -> [Metal2D.Metal2DRenderer.InstanceData]
+  public func buildRectInstances(positions: [(x: Swift.Float, y: Swift.Float, color: Metal2D.Color)], width: Swift.Float, height: Swift.Float) -> [Metal2D.Metal2DRenderer.InstanceData]
+  public func transformPoints(_ points: [simd.simd_float2]) -> [simd.simd_float2]
+  public func blendColors(_ color1: Metal2D.Color, _ color2: Metal2D.Color, factor: Swift.Float) -> Metal2D.Color
+  public func optimizeMemory()
+  public func getMemoryUsage() -> Metal2D.MemoryUsage
+  @objc deinit
+}
+public struct MemoryUsage {
+  public let verticesBytes: Swift.Int
+  public let indicesBytes: Swift.Int
+  public let layerCount: Swift.Int
+  public init(verticesBytes: Swift.Int, indicesBytes: Swift.Int, layerCount: Swift.Int)
+}
+public class Layer {
+  final public let id: Swift.String
+  public var isVisible: Swift.Bool
+  public var alpha: Swift.Float
+  public var blendMode: Metal2D.BlendMode
+  public var transform: simd.simd_float3x3
+  public init(id: Swift.String)
+  public func clear()
+  public func draw(with renderEncoder: any Metal.MTLRenderCommandEncoder)
+  @objc deinit
+}
+public enum BlendMode {
+  case normal
+  case multiply
+  case screen
+  case overlay
+  case softLight
+  case hardLight
+  case colorDodge
+  case colorBurn
+  case darken
+  case lighten
+  case difference
+  case exclusion
+  public static func == (a: Metal2D.BlendMode, b: Metal2D.BlendMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class LayerManager {
+  public init(graphics: Metal2D.Graphics)
+  @discardableResult
+  public func createLayer(_ id: Swift.String) -> Metal2D.Layer
+  public func removeLayer(_ id: Swift.String)
+  public func setCurrentLayer(_ id: Swift.String)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getCurrentLayer() -> Metal2D.Layer?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func getLayer(_ id: Swift.String) -> Metal2D.Layer?
+  #endif
+  public func setLayerOrder(_ order: [Swift.String])
+  public func moveLayerToFront(_ id: Swift.String)
+  public func moveLayerToBack(_ id: Swift.String)
+  public func renderAllLayers(with renderEncoder: any Metal.MTLRenderCommandEncoder)
+  public func clearAllLayers()
+  public func clearLayer(_ id: Swift.String)
+  @objc deinit
+}
+final public class MTLBufferPool {
+  public enum BufferSize : Swift.Int, Swift.CaseIterable, Swift.Sendable {
+    case small
+    case medium
+    case large
+    case extraLarge
+    #if compiler(>=5.3) && $NonescapableTypes
+    public init?(rawValue: Swift.Int)
+    #endif
+    public typealias AllCases = [Metal2D.MTLBufferPool.BufferSize]
+    public typealias RawValue = Swift.Int
+    nonisolated public static var allCases: [Metal2D.MTLBufferPool.BufferSize] {
+      get
+    }
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public init(device: any Metal.MTLDevice, storageMode: Metal.MTLResourceOptions = .storageModeShared)
+  @objc deinit
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func acquireBuffer(byteCount: Swift.Int) -> (any Metal.MTLBuffer)?
+  #endif
+  final public func releaseBuffer(_ buffer: any Metal.MTLBuffer)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func acquireBuffer<T>(for data: [T]) -> (any Metal.MTLBuffer)?
+  #endif
+  final public func updateBuffer<T>(_ buffer: any Metal.MTLBuffer, with data: [T])
+  final public func cleanup()
+  final public func purge()
+  public struct BufferPoolStats : Swift.Sendable {
+    public var totalRequests: Swift.Int
+    public var cacheHits: Swift.Int
+    public var cacheMisses: Swift.Int
+    public var buffersCreated: Swift.Int
+    public var hitRate: Swift.Double {
+      get
+    }
+  }
+  final public func getStats() -> Metal2D.MTLBufferPool.BufferPoolStats
+  final public func resetStats()
+  final public func getPoolStatus() -> [Metal2D.MTLBufferPool.BufferSize : (total: Swift.Int, available: Swift.Int, inUse: Swift.Int)]
+}
+extension Metal2D.MTLBufferPool {
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func acquireVertexBuffer<T>(for vertices: [T]) -> (any Metal.MTLBuffer)?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func acquireLineBuffer<T>(for vertices: [T]) -> (any Metal.MTLBuffer)?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func acquireGridBuffer<T>(for vertices: [T]) -> (any Metal.MTLBuffer)?
+  #endif
+}
+public class Metal2DRenderer {
+  public var device: any Metal.MTLDevice {
+    get
+  }
+  public var screenSize: simd.simd_float2
+  public var frameStats: Metal2D.FrameStats {
+    get
+  }
+  public var currentGraphics: Metal2D.Graphics {
+    get
+  }
+  public func configureAllGraphics(_ configure: (Metal2D.Graphics) -> Swift.Void)
+  public struct InstanceData {
+    public var position: simd.simd_float2
+    public var size: simd.simd_float2
+    public var color: simd.simd_float4
+    public init(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float, color: simd.simd_float4)
+  }
+  public init(device: any Metal.MTLDevice)
+  #if compiler(>=5.3) && $NonescapableTypes
+  convenience public init?()
+  #endif
+  public func registerPostProcessEffect(id: Swift.String, fragmentSource: Swift.String, fragmentFunctionName: Swift.String = "fragment_postprocess") throws
+  public func setPostProcessChain(_ effectIDs: [Swift.String])
+  public func clearPostProcessChain()
+  public func setPostProcessParameters(_ effectID: Swift.String, parameters: [Swift.Float])
+  public func render(graphics: Metal2D.Graphics, renderEncoder: any Metal.MTLRenderCommandEncoder)
+  public func renderTextured(graphics: Metal2D.Graphics, texture: any Metal.MTLTexture, renderEncoder: any Metal.MTLRenderCommandEncoder)
+  public func renderInstanced(instances: [Metal2D.Metal2DRenderer.InstanceData], renderEncoder: any Metal.MTLRenderCommandEncoder, screenSize: simd.simd_float2)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func render(graphics: Metal2D.Graphics, to drawable: any QuartzCore.CAMetalDrawable, clearColor: Metal.MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1), commandBuffer: (any Metal.MTLCommandBuffer)? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func render(graphics: Metal2D.Graphics, to texture: any Metal.MTLTexture, clearColor: Metal.MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1), commandBuffer: (any Metal.MTLCommandBuffer)? = nil)
+  #endif
+  @discardableResult
+  public func beginFrame(width: Swift.Float, height: Swift.Float) -> Metal2D.Graphics
+  public func endFrame(drawable: any QuartzCore.CAMetalDrawable, clearColor: Metal.MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1))
+  public func getCommandQueue() -> any Metal.MTLCommandQueue
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func makeCommandBuffer() -> (any Metal.MTLCommandBuffer)?
+  #endif
+  @objc deinit
+}
+public struct PathPoint {
+  public let position: simd.simd_float2
+  public let type: Metal2D.PathPointType
+  public let control1: simd.simd_float2?
+  public let control2: simd.simd_float2?
+}
+public enum PathPointType {
+  case moveTo
+  case lineTo
+  case bezierCurveTo
+  case quadraticCurveTo
+  case arc
+  case close
+  public static func == (a: Metal2D.PathPointType, b: Metal2D.PathPointType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public class Path {
+  public init()
+  public func moveTo(_ x: Swift.Float, _ y: Swift.Float)
+  public func lineTo(_ x: Swift.Float, _ y: Swift.Float)
+  public func bezierCurveTo(_ cp1x: Swift.Float, _ cp1y: Swift.Float, _ cp2x: Swift.Float, _ cp2y: Swift.Float, _ x: Swift.Float, _ y: Swift.Float)
+  public func quadraticCurveTo(_ cpx: Swift.Float, _ cpy: Swift.Float, _ x: Swift.Float, _ y: Swift.Float)
+  public func arc(_ centerX: Swift.Float, _ centerY: Swift.Float, _ radius: Swift.Float, _ startAngle: Swift.Float, _ endAngle: Swift.Float, _ anticlockwise: Swift.Bool = false)
+  public func close()
+  public func getPoints() -> [Metal2D.PathPoint]
+  public func getClosed() -> Swift.Bool
+  public func tessellate() -> (vertices: [simd.simd_float2], indices: [Swift.UInt32])
+  nonisolated(unsafe) public static var tessellationTolerance: Swift.Float
+  nonisolated(unsafe) public static var maxSubdivisionDepth: Swift.Int
+  @objc deinit
+}
+public struct GraphicsState {
+}
+public struct Physics2D {
+  public static func applyFriction(_ velocity: inout Metal2D.Vector2D, friction: Swift.Float, dt: Swift.Float)
+  public static func bounceOffWalls(_ sprite: Metal2D.Sprite, bounds: CoreFoundation.CGRect, restitution: Swift.Float = 0.7)
+  public static func overlaps(_ a: Metal2D.Sprite, _ b: Metal2D.Sprite) -> Swift.Bool
+  public static func resolveCollision(_ a: Metal2D.Sprite, _ b: Metal2D.Sprite, restitution: Swift.Float = 0.8)
+}
+public struct PostProcessUniforms {
+  public var resolution: simd.simd_float2
+  public var time: Swift.Float
+  public var _pad: Swift.Float
+  public init(resolution: simd.simd_float2 = .zero, time: Swift.Float = 0)
+}
+public struct PostProcessEffect : @unchecked Swift.Sendable {
+  public let id: Swift.String
+  public var parameters: [Swift.Float]
+}
+public enum PostProcessError : Swift.Error {
+  case functionNotFound(Swift.String)
+  case compilationFailed(Swift.String)
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @_Concurrency.MainActor @preconcurrency public class ProcessingKitView : MetalKit.MTKView, MetalKit.MTKViewDelegate, UIKit.UIGestureRecognizerDelegate {
+  @_Concurrency.MainActor @preconcurrency public var graphics: Metal2D.Graphics {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public var renderer: Metal2D.Metal2DRenderer! {
+    get
+  }
+  @_Concurrency.MainActor @preconcurrency public var autoUpdatePanelBounds: Swift.Bool
+  @_Concurrency.MainActor @preconcurrency public var onDrawableSizeChanged: ((CoreFoundation.CGSize) -> Swift.Void)?
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(frame frameRect: CoreFoundation.CGRect, device: (any Metal.MTLDevice)?)
+  #endif
+  @_Concurrency.MainActor @preconcurrency @objc public func gestureRecognizer(_ gestureRecognizer: UIKit.UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIKit.UIGestureRecognizer) -> Swift.Bool
+  @_Concurrency.MainActor @preconcurrency @objc public func mtkView(_ view: MetalKit.MTKView, drawableSizeWillChange size: CoreFoundation.CGSize)
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic public func layoutSubviews()
+  @_Concurrency.MainActor @preconcurrency @objc public func draw(in view: MetalKit.MTKView)
+  @_Concurrency.MainActor @preconcurrency public func addPanel(_ panel: any Metal2D.DrawingPanel)
+  @_Concurrency.MainActor @preconcurrency public func removePanel(_ panel: any Metal2D.DrawingPanel)
+  @_Concurrency.MainActor @preconcurrency public func clearPanels()
+  @_Concurrency.MainActor @preconcurrency public func updatePanelBounds()
+  @objc deinit
+}
+public class ExamplePanel : Metal2D.DrawingPanel {
+  public var bounds: CoreFoundation.CGRect
+  public init()
+  public func setup()
+  public func update(deltaTime: Swift.Float)
+  public func draw(_ graphics: Metal2D.Graphics)
+  @objc deinit
+}
+final public class RenderTarget {
+  final public var texture: (any Metal.MTLTexture)! {
+    get
+  }
+  final public let graphics: Metal2D.Graphics
+  final public var width: Swift.Int {
+    get
+  }
+  final public var height: Swift.Int {
+    get
+  }
+  final public var hasContent: Swift.Bool {
+    get
+  }
+  public init(renderer: Metal2D.Metal2DRenderer, width: Swift.Int, height: Swift.Int)
+  final public func resize(width: Swift.Int, height: Swift.Int)
+  final public func begin(clearColor: Metal.MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0))
+  final public func end()
+  final public func endAndWait()
+  final public func draw(clearColor: Metal.MTLClearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0), _ block: (Metal2D.Graphics) -> Swift.Void)
+  @objc deinit
+}
+final public class SceneGraph {
+  final public var root: Metal2D.RenderNode {
+    get
+  }
+  public init()
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func node(for id: Foundation.UUID) -> Metal2D.RenderNode?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  final public func createNode(tag: Swift.String = "", parent: Metal2D.RenderNode? = nil) -> Metal2D.RenderNode
+  #endif
+  final public func removeNode(_ node: Metal2D.RenderNode)
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func hitTest(_ point: CoreFoundation.CGPoint) -> Metal2D.RenderNode?
+  #endif
+  final public func drawOrder() -> [Metal2D.RenderNode]
+  final public func instanceBatches() -> Metal2D.SceneGraph.InstanceBatches
+  public struct InstanceBatches {
+    public let keyed: [Swift.String : [Metal2D.Metal2DRenderer.InstanceData]]
+    public let unbatched: [Metal2D.RenderNode]
+  }
+  final public var needsRedraw: Swift.Bool {
+    get
+  }
+  final public func clearDirtyFlags()
+  @objc deinit
+}
+final public class RenderNode {
+  final public let id: Foundation.UUID
+  final public var tag: Swift.String
+  final public var frame: CoreFoundation.CGRect {
+    get
+    set
+  }
+  final public var zOrder: Swift.Int {
+    get
+    set
+  }
+  final public var isVisible: Swift.Bool {
+    get
+    set
+  }
+  final public var rotation: CoreFoundation.CGFloat {
+    get
+    set
+  }
+  final public var alpha: CoreFoundation.CGFloat {
+    get
+    set
+  }
+  final public var isEnabled: Swift.Bool
+  final public var isHitTestable: Swift.Bool
+  final public var hitShape: Metal2D.Shape2D
+  final public var hitPadding: CoreFoundation.CGFloat
+  final public var isDirty: Swift.Bool {
+    get
+  }
+  final public var userInfo: [Swift.String : Any]
+  final public var onTouchBegan: ((_ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  final public var onTouchMoved: ((_ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  final public var onTouchEnded: ((_ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  final public var onTap: (() -> Swift.Void)?
+  weak final public var parent: Metal2D.RenderNode? {
+    get
+  }
+  final public var children: [Metal2D.RenderNode] {
+    get
+  }
+  public init(tag: Swift.String = "")
+  final public func addChild(_ child: Metal2D.RenderNode)
+  final public func removeChild(_ child: Metal2D.RenderNode)
+  final public func markDirty()
+  final public var worldFrame: CoreFoundation.CGRect {
+    get
+  }
+  final public func containsPoint(_ point: CoreFoundation.CGPoint) -> Swift.Bool
+  @objc deinit
+}
+public enum ShaderLibrary {
+  public static let gaussianBlurH: Swift.String
+  public static let gaussianBlurV: Swift.String
+  public static let bloom: Swift.String
+  public static let chromaticAberration: Swift.String
+  public static let vignette: Swift.String
+  public static let filmGrain: Swift.String
+  public static let crtScanlines: Swift.String
+  public static let barrelDistortion: Swift.String
+  public static let edgeDetection: Swift.String
+  public static let pixelate: Swift.String
+  public static let sharpen: Swift.String
+  public static let toneMapACES: Swift.String
+  public static let motionBlur: Swift.String
+  public static let perlinNoise: Swift.String
+  public static let voronoiNoise: Swift.String
+  public static let fog: Swift.String
+  public static let godRays: Swift.String
+  public static let clouds: Swift.String
+  public static let heatHaze: Swift.String
+  public static let caustics: Swift.String
+  public static let ripple: Swift.String
+  public static let normalMapLighting: Swift.String
+  public static let rimLight: Swift.String
+  public static let halftone: Swift.String
+  public static let posterize: Swift.String
+  public static let glitch: Swift.String
+  public static let dissolve: Swift.String
+  public static let cmykHalftone: Swift.String
+  public static let lineHalftone: Swift.String
+  public static let crossHatch: Swift.String
+  public static let stipple: Swift.String
+  public static let sketch: Swift.String
+  public static let stainedGlass: Swift.String
+  public static let magnify: Swift.String
+  public static let woodcut: Swift.String
+  public static let popArt: Swift.String
+  public static let diamondHalftone: Swift.String
+  public static let kaleidoscope: Swift.String
+  public static let wave: Swift.String
+  public static let zoomBlur: Swift.String
+  public static let tiltShift: Swift.String
+  public static let thermal: Swift.String
+  public static let nightVision: Swift.String
+  public static let duotone: Swift.String
+  public static let oldFilm: Swift.String
+  public static let dither: Swift.String
+  public static let rain: Swift.String
+  public static let underwater: Swift.String
+  public static let aurora: Swift.String
+  public static let fractal: Swift.String
+  public static let chromaticSwirl: Swift.String
+  public static let colorCycle: Swift.String
+  public static let embossPost: Swift.String
+  public static let all: [(id: Swift.String, source: Swift.String, defaultParams: [Swift.Float])]
+  @discardableResult
+  public static func registerAll(with renderer: Metal2D.Metal2DRenderer) -> [Swift.String]
+}
+public enum Shape2D {
+  case rect
+  case ellipse
+  case circle
+  public static func == (a: Metal2D.Shape2D, b: Metal2D.Shape2D) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension Metal2D.Shape2D {
+  @inline(__always) public static func hitTest(localX: CoreFoundation.CGFloat, localY: CoreFoundation.CGFloat, halfWidth: CoreFoundation.CGFloat, halfHeight: CoreFoundation.CGFloat, shape: Metal2D.Shape2D) -> Swift.Bool
+}
+@available(*, deprecated, renamed: "Shape2D")
+public typealias SpriteShape = Metal2D.Shape2D
+@available(*, deprecated, renamed: "Shape2D")
+public typealias HitShape = Metal2D.Shape2D
+open class Sprite {
+  public var position: Metal2D.Vector2D
+  public var rotation: Swift.Float
+  public var scale: Metal2D.Vector2D
+  public var size: Metal2D.Vector2D
+  public var velocity: Metal2D.Vector2D
+  public var angularVelocity: Swift.Float
+  public var friction: Swift.Float
+  public var mass: Swift.Float
+  public var isStatic: Swift.Bool
+  public var color: Metal2D.Color
+  public var alpha: Swift.Float
+  public var effect: Metal2D.ShaderEffect
+  public var shape: Metal2D.Shape2D
+  public var customDraw: ((Metal2D.Graphics, Metal2D.Sprite) -> Swift.Void)?
+  public var isDragging: Swift.Bool
+  public var tag: Swift.Int
+  public var isEnabled: Swift.Bool
+  public var isPressed: Swift.Bool {
+    get
+  }
+  public var touchPadding: Swift.Float
+  public var onTap: (() -> Swift.Void)?
+  public var onPressChanged: ((Swift.Bool) -> Swift.Void)?
+  public var onDrag: ((Metal2D.Vector2D) -> Swift.Void)?
+  public var onRelease: ((Metal2D.Vector2D) -> Swift.Void)?
+  public init(x: Swift.Float, y: Swift.Float, width: Swift.Float, height: Swift.Float)
+  public init(position: Metal2D.Vector2D, size: Metal2D.Vector2D)
+  public var collisionRadius: Swift.Float {
+    get
+  }
+  public func contains(_ point: Metal2D.Vector2D) -> Swift.Bool
+  public func update(deltaTime: Swift.Float)
+  public func draw(_ graphics: Metal2D.Graphics)
+  public func flick(_ impulse: Metal2D.Vector2D)
+  @objc deinit
+}
+public class SpriteGroup {
+  public var sprites: [Metal2D.Sprite]
+  public var position: Metal2D.Vector2D
+  public init()
+  public var dragThreshold: Swift.Float
+  #if compiler(>=5.3) && $NonescapableTypes
+  @discardableResult
+  public func touchBegan(id: Swift.Int, at point: Metal2D.Vector2D) -> Metal2D.Sprite?
+  #endif
+  public func touchMoved(id: Swift.Int, at point: Metal2D.Vector2D, velocity: Metal2D.Vector2D = .zero)
+  public func touchEnded(id: Swift.Int, at point: Metal2D.Vector2D, velocity: Metal2D.Vector2D = .zero)
+  public func touchCancelled(id: Swift.Int)
+  public func cancelAllTouches()
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func spriteAt(_ point: Metal2D.Vector2D) -> Metal2D.Sprite?
+  #endif
+  public func update(deltaTime: Swift.Float)
+  public func draw(_ graphics: Metal2D.Graphics)
+  public func bounceOffWalls(_ bounds: CoreFoundation.CGRect, restitution: Swift.Float = 0.7)
+  public func resolveCollisions(restitution: Swift.Float = 0.8)
+  @discardableResult
+  public func add(_ sprite: Metal2D.Sprite) -> Metal2D.Sprite
+  public func remove(_ sprite: Metal2D.Sprite)
+  @objc deinit
+}
+public struct TextStyle : Swift.Sendable {
+  public var fontName: Swift.String
+  public var fontSize: Swift.Float
+  public var color: simd.simd_float4
+  public var bold: Swift.Bool
+  public var italic: Swift.Bool
+  public init(fontName: Swift.String = ".AppleSystemUIFont", fontSize: Swift.Float = 14, color: simd.simd_float4 = simd_float4(1, 1, 1, 1), bold: Swift.Bool = false, italic: Swift.Bool = false)
+}
+final public class StyledText {
+  public init(_ text: Swift.String, style: Metal2D.TextStyle = TextStyle())
+  final public func setStyle(_ style: Metal2D.TextStyle, range: Swift.Range<Swift.Int>)
+  @objc deinit
+}
+public enum TextAlignment : Swift.Sendable {
+  case left
+  case center
+  case right
+  case justified
+  public static func == (a: Metal2D.TextAlignment, b: Metal2D.TextAlignment) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct GlyphRun : Swift.Sendable {
+  public let origin: simd.simd_float2
+  public let width: Swift.Float
+  public let text: Swift.String
+  public let fontSize: Swift.Float
+  public let color: simd.simd_float4
+  public let lineIndex: Swift.Int
+}
+public struct TextLayoutResult : Swift.Sendable {
+  public let runs: [Metal2D.GlyphRun]
+  public let size: simd.simd_float2
+  public let lineCount: Swift.Int
+  public let lineBaselines: [Swift.Float]
+  public let lineWidths: [Swift.Float]
+}
+final public class TextLayout {
+  public init()
+  final public func layout(_ text: Metal2D.StyledText, maxWidth: Swift.Float, alignment: Metal2D.TextAlignment = .left) -> Metal2D.TextLayoutResult
+  final public func layoutSingleLine(_ text: Metal2D.StyledText) -> Metal2D.TextLayoutResult
+  #if compiler(>=5.3) && $NonescapableTypes
+  final public func hitTest(point: simd.simd_float2, in result: Metal2D.TextLayoutResult, text: Metal2D.StyledText) -> Swift.Int?
+  #endif
+  @objc deinit
+}
+extension Metal2D.Graphics {
+  public func text(_ text: Swift.String, x: Swift.Float, y: Swift.Float, fontSize: Swift.Float = 24, color: Metal2D.Color = .white)
+  public func textWidth(_ text: Swift.String, fontSize: Swift.Float = 14) -> Swift.Float
+  public func textHeight(_ text: Swift.String, fontSize: Swift.Float = 14) -> Swift.Float
+  public func lcdText(_ text: Swift.String, x: Swift.Float, y: Swift.Float, fontSize: Swift.Float = 24, color: Metal2D.Color = .white)
+}
+public class TextureCache : @unchecked Swift.Sendable {
+  public var memoryLimit: Swift.Int
+  public var currentMemoryUsage: Swift.Int {
+    get
+  }
+  public init(device: any Metal.MTLDevice)
+  public init(loader: Metal2D.TextureLoader)
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func texture(forKey key: Swift.String) -> (any Metal.MTLTexture)?
+  #endif
+  public func setTexture(_ texture: any Metal.MTLTexture, forKey key: Swift.String)
+  public func removeTexture(forKey key: Swift.String)
+  public func clear()
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from path: Swift.String, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from url: Foundation.URL, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(named name: Swift.String, in bundle: Foundation.Bundle = .main, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTextureAsync(from url: Foundation.URL, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil, completion: @escaping @Sendable (Swift.Result<any Metal.MTLTexture, any Swift.Error>) -> Swift.Void)
+  #endif
+  public var count: Swift.Int {
+    get
+  }
+  public var keys: [Swift.String] {
+    get
+  }
+  @objc deinit
+}
+public class TextureLoader {
+  public init(device: any Metal.MTLDevice)
+  public static var defaultOptions: [MetalKit.MTKTextureLoader.Option : Any] {
+    get
+  }
+  public static var pixelArtOptions: [MetalKit.MTKTextureLoader.Option : Any] {
+    get
+  }
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from path: Swift.String, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from url: Foundation.URL, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from data: Foundation.Data, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from cgImage: CoreGraphics.CGImage, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(from image: UIKit.UIImage, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTexture(named name: Swift.String, in bundle: Foundation.Bundle = .main, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil) throws -> any Metal.MTLTexture
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTextureAsync(from url: Foundation.URL, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil, completion: @escaping @Sendable (Swift.Result<any Metal.MTLTexture, any Swift.Error>) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func loadTextureAsync(from data: Foundation.Data, options: [MetalKit.MTKTextureLoader.Option : Any]? = nil, completion: @escaping @Sendable (Swift.Result<any Metal.MTLTexture, any Swift.Error>) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func createTexture(width: Swift.Int, height: Swift.Int, pixelFormat: Metal.MTLPixelFormat = .bgra8Unorm, usage: Metal.MTLTextureUsage = [.shaderRead, .renderTarget]) -> (any Metal.MTLTexture)?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func createTexture(from pixels: [Swift.UInt8], width: Swift.Int, height: Swift.Int) -> (any Metal.MTLTexture)?
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  public func createSolidColorTexture(color: simd.simd_float4, width: Swift.Int = 1, height: Swift.Int = 1) -> (any Metal.MTLTexture)?
+  #endif
+  @objc deinit
+}
+public enum TextureLoadError : Swift.Error, Swift.CustomStringConvertible {
+  case invalidImage
+  case fileNotFound(Swift.String)
+  case unknownError
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol Theme {
+  var backgroundColor: Metal2D.Color { get }
+  var foregroundColor: Metal2D.Color { get }
+  var accentColor: Metal2D.Color { get }
+  var secondaryAccentColor: Metal2D.Color { get }
+  var gridColor: Metal2D.Color { get }
+  var successColor: Metal2D.Color { get }
+  var errorColor: Metal2D.Color { get }
+  var warningColor: Metal2D.Color { get }
+  var mutedColor: Metal2D.Color { get }
+}
+public struct BasicTheme : Metal2D.Theme, Swift.Sendable {
+  public var backgroundColor: Metal2D.Color
+  public var foregroundColor: Metal2D.Color
+  public var accentColor: Metal2D.Color
+  public var secondaryAccentColor: Metal2D.Color
+  public var gridColor: Metal2D.Color
+  public var successColor: Metal2D.Color
+  public var errorColor: Metal2D.Color
+  public var warningColor: Metal2D.Color
+  public var mutedColor: Metal2D.Color
+  public init(backgroundColor: Metal2D.Color, foregroundColor: Metal2D.Color, accentColor: Metal2D.Color, secondaryAccentColor: Metal2D.Color, gridColor: Metal2D.Color, successColor: Metal2D.Color, errorColor: Metal2D.Color, warningColor: Metal2D.Color, mutedColor: Metal2D.Color)
+}
+extension Metal2D.BasicTheme {
+  public static let dark: Metal2D.BasicTheme
+  public static let light: Metal2D.BasicTheme
+  public static let highContrastDark: Metal2D.BasicTheme
+  public static let warmDark: Metal2D.BasicTheme
+  public static let coolDark: Metal2D.BasicTheme
+}
+extension Metal2D.Color {
+  public var simd4: Swift.SIMD4<Swift.Float> {
+    get
+  }
+}
+extension Metal2D.Theme {
+  public var backgroundSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var foregroundSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var accentSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var successSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var errorSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+  public var gridSIMD: Swift.SIMD4<Swift.Float> {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor @preconcurrency open class TouchOverlayView : UIKit.UIView {
+  @_Concurrency.MainActor @preconcurrency public var onTouchBegan: ((_ id: Swift.Int, _ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onTouchMoved: ((_ id: Swift.Int, _ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onTouchEnded: ((_ id: Swift.Int, _ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onTap: ((_ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onPanBegan: ((_ point: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onPanChanged: ((_ point: CoreFoundation.CGPoint, _ velocity: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var onPanEnded: ((_ point: CoreFoundation.CGPoint, _ velocity: CoreFoundation.CGPoint) -> Swift.Void)?
+  @_Concurrency.MainActor @preconcurrency public var scaleProvider: (() -> CoreFoundation.CGFloat)?
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic public init(frame: CoreFoundation.CGRect)
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc required dynamic public init?(coder: Foundation.NSCoder)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic open func touchesBegan(_ touches: Swift.Set<UIKit.UITouch>, with event: UIKit.UIEvent?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic open func touchesMoved(_ touches: Swift.Set<UIKit.UITouch>, with event: UIKit.UIEvent?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic open func touchesEnded(_ touches: Swift.Set<UIKit.UITouch>, with event: UIKit.UIEvent?)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
+  @_Concurrency.MainActor @preconcurrency @objc override dynamic open func touchesCancelled(_ touches: Swift.Set<UIKit.UITouch>, with event: UIKit.UIEvent?)
+  #endif
+  @objc deinit
+}
+public struct Vector2D {
+  public var x: Swift.Float
+  public var y: Swift.Float
+  public init(_ x: Swift.Float, _ y: Swift.Float)
+  public var magnitude: Swift.Float {
+    get
+  }
+  public var magnitudeSquared: Swift.Float {
+    get
+  }
+  public var normalized: Metal2D.Vector2D {
+    get
+  }
+  public func dot(_ other: Metal2D.Vector2D) -> Swift.Float
+  public static func + (lhs: Metal2D.Vector2D, rhs: Metal2D.Vector2D) -> Metal2D.Vector2D
+  public static func - (lhs: Metal2D.Vector2D, rhs: Metal2D.Vector2D) -> Metal2D.Vector2D
+  public static func * (lhs: Metal2D.Vector2D, rhs: Swift.Float) -> Metal2D.Vector2D
+  public static func * (lhs: Swift.Float, rhs: Metal2D.Vector2D) -> Metal2D.Vector2D
+  public static func += (lhs: inout Metal2D.Vector2D, rhs: Metal2D.Vector2D)
+  public static func -= (lhs: inout Metal2D.Vector2D, rhs: Metal2D.Vector2D)
+  public static func *= (lhs: inout Metal2D.Vector2D, rhs: Swift.Float)
+}
+public struct Vertex {
+  public let position: simd.simd_float2
+  public let color: simd.simd_float4
+  public let texCoord: simd.simd_float2
+  public init(position: simd.simd_float2, color: simd.simd_float4)
+  public init(position: simd.simd_float2, color: simd.simd_float4, texCoord: simd.simd_float2)
+}
+extension Metal2D.KeyframeAnimation.State : Swift.Equatable {}
+extension Metal2D.KeyframeAnimation.State : Swift.Hashable {}
+extension Metal2D.KeyframeAnimation.TimeMode : Swift.Equatable {}
+extension Metal2D.KeyframeAnimation.TimeMode : Swift.Hashable {}
+extension Metal2D.Timeline.State : Swift.Equatable {}
+extension Metal2D.Timeline.State : Swift.Hashable {}
+extension Metal2D.Tween.State : Swift.Equatable {}
+extension Metal2D.Tween.State : Swift.Hashable {}
+extension Metal2D.GridStyle : Swift.Equatable {}
+extension Metal2D.GridStyle : Swift.Hashable {}
+extension Metal2D.LineCap : Swift.Equatable {}
+extension Metal2D.LineCap : Swift.Hashable {}
+extension Metal2D.LineJoin : Swift.Equatable {}
+extension Metal2D.LineJoin : Swift.Hashable {}
+extension Metal2D.AntiAliasQuality : Swift.Equatable {}
+extension Metal2D.AntiAliasQuality : Swift.Hashable {}
+extension Metal2D.BlendMode : Swift.Equatable {}
+extension Metal2D.BlendMode : Swift.Hashable {}
+extension Metal2D.MTLBufferPool.BufferSize : Swift.Equatable {}
+extension Metal2D.MTLBufferPool.BufferSize : Swift.Hashable {}
+extension Metal2D.MTLBufferPool.BufferSize : Swift.RawRepresentable {}
+extension Metal2D.PathPointType : Swift.Equatable {}
+extension Metal2D.PathPointType : Swift.Hashable {}
+extension Metal2D.Shape2D : Swift.Equatable {}
+extension Metal2D.Shape2D : Swift.Hashable {}
+extension Metal2D.TextAlignment : Swift.Equatable {}
+extension Metal2D.TextAlignment : Swift.Hashable {}
