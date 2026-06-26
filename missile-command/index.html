@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Missile Command</title>
+    <style>
+      :root { color-scheme: dark; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: "Courier New", ui-monospace, monospace;
+      }
+      #stage {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+      canvas {
+        display: block;
+        image-rendering: pixelated;
+        cursor: none;
+        background: #000;
+        box-shadow: 0 0 60px rgba(80, 120, 255, 0.15);
+        touch-action: none;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-Hx2XqohU.js"></script>
+  </head>
+  <body>
+    <div id="stage"><canvas id="screen"></canvas></div>
+  </body>
+</html>
